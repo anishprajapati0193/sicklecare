@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f3f7f8">
+<title>SickleCare Monitoring Patch | RX ELEVATE</title>
+<style>
+.vital-simulator{--vs-ink:#152b3a;--vs-muted:#627582;--vs-line:#dbe5e9;--vs-paper:#fff;--vs-bg:#f3f7f8;--vs-blue:#176b91;--vs-blue-soft:#e7f3f8;--vs-teal:#138c84;--vs-teal-soft:#e5f5f1;--vs-red:#ad3d45;--vs-red-soft:#fff0ee;--vs-amber:#8d600a;--vs-amber-soft:#fff5df;min-height:100vh;background:var(--vs-bg);color:var(--vs-ink);font:14px/1.5 "Aptos", "Segoe UI", sans-serif}
+.vital-simulator *{box-sizing:border-box}
+.vital-simulator button,.vital-simulator input,.vital-simulator select,.vital-simulator textarea{font:inherit}
+.vital-simulator button{cursor:pointer}
+.vital-simulator a{color:inherit}
+.vital-simulator .vs-wrap{max-width:1500px;margin:0 auto;padding:0 26px}
+.vital-simulator .vs-header{height:76px;background:#fff;border-bottom:1px solid var(--vs-line);display:flex;align-items:center}
+.vital-simulator .vs-head-inner{display:flex;align-items:center;justify-content:space-between;width:100%;gap:20px}
+.vital-simulator .vs-brand{display:flex;align-items:center;gap:12px;min-width:0}
+.vital-simulator .vs-mark{display:grid;place-items:center;width:38px;height:38px;background:var(--vs-blue);color:white;font-weight:800;font-size:18px;border-radius:8px;flex:none}
+.vital-simulator .vs-brand-name{font-size:14px;font-weight:750;letter-spacing:.04em;line-height:1.2}
+.vital-simulator .vs-brand-sub{font-size:11px;color:var(--vs-muted);margin-top:4px;letter-spacing:.12em;font-weight:700}
+.vital-simulator .vs-crumb{font-size:12px;color:var(--vs-muted);margin:14px 0 18px}
+.vital-simulator .vs-crumb strong{color:var(--vs-ink);font-weight:650}
+.vital-simulator .vs-back{height:38px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:0 13px;border:1px solid var(--vs-line);background:white;border-radius:6px;font-weight:650;font-size:12px;white-space:nowrap}
+.vital-simulator .vs-back:hover,.vital-simulator .vs-btn-secondary:hover{border-color:#98b9c8;background:#f9fcfd}
+.vital-simulator .vs-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:16px}
+.vital-simulator .vs-eyebrow{color:var(--vs-teal);font-weight:750;font-size:10px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:6px}
+.vital-simulator h1,.vital-simulator h2,.vital-simulator h3,.vital-simulator p{margin-top:0}
+.vital-simulator h1{font-size:25px;line-height:1.18;margin-bottom:4px;letter-spacing:0}
+.vital-simulator .vs-subtitle{color:var(--vs-muted);font-size:13px;margin:0}
+.vital-simulator .vs-status{display:flex;align-items:center;gap:7px;border:1px solid var(--vs-line);background:#fff;border-radius:5px;padding:7px 10px;font-size:11px;font-weight:650;white-space:nowrap}
+.vital-simulator .vs-link-btn{height:28px;padding:0 9px;border:1px solid #b9d8df;border-radius:4px;background:var(--vs-teal-soft);color:#116d67;font-size:9px;font-weight:750}
+.vital-simulator .vs-link-btn:hover{background:#d8eee9}
+.vital-simulator .vs-link-state{font-size:9px;color:var(--vs-muted);font-weight:600}
+.vital-simulator .vs-dot{width:7px;height:7px;border-radius:50%;background:#c38826;box-shadow:0 0 0 3px #fff1d0}
+.vital-simulator .vs-workspace{display:grid;grid-template-columns:minmax(190px,.78fr) minmax(390px,1.72fr) minmax(300px,1.1fr);gap:14px;align-items:stretch}
+.vital-simulator .vs-panel{background:var(--vs-paper);border:1px solid var(--vs-line);border-radius:7px;box-shadow:0 3px 12px #18364708;min-width:0}
+.vital-simulator .vs-panel-head{padding:15px 16px 12px;border-bottom:1px solid #edf1f2;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.vital-simulator .vs-panel-title{font-size:13px;line-height:1.3;font-weight:750;margin:0}
+.vital-simulator .vs-panel-kicker{color:var(--vs-muted);font-size:10px;margin:3px 0 0}
+.vital-simulator .vs-hardware{padding:9px}
+.vital-simulator .vs-part{width:100%;border:1px solid transparent;background:white;border-radius:5px;display:grid;grid-template-columns:34px minmax(0,1fr) 14px;align-items:center;gap:9px;text-align:left;padding:9px 8px;margin:2px 0;color:var(--vs-ink);transition:background .16s,border .16s,transform .16s}
+.vital-simulator .vs-part:hover{background:#f5fafb;transform:translateX(2px)}
+.vital-simulator .vs-part.is-active{background:var(--vs-blue-soft);border-color:#b7d7e3}
+.vital-simulator .vs-part-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:5px;background:#f0f5f6;color:var(--vs-blue);font-size:10px;font-weight:800}
+.vital-simulator .vs-part.is-active .vs-part-icon{background:#d5ebf3}
+.vital-simulator .vs-part-name{display:block;font-size:11px;font-weight:750}
+.vital-simulator .vs-part-desc{display:block;color:var(--vs-muted);font-size:9px;margin-top:2px;line-height:1.3}
+.vital-simulator .vs-part-arrow{color:#91a3ad;font-size:16px}
+.vital-simulator .vs-purpose{margin:9px;padding:10px;background:#f6f9fa;border-radius:5px;border-left:2px solid var(--vs-teal);font-size:10px;color:var(--vs-muted);min-height:61px}
+.vital-simulator .vs-purpose strong{display:block;color:var(--vs-ink);font-size:10px;margin-bottom:3px}
+.vital-simulator .vs-stage{display:flex;flex-direction:column;overflow:hidden}
+.vital-simulator .vs-stagebar{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#fff;border-bottom:1px solid #edf1f2;gap:10px}
+.vital-simulator .vs-mode{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:750;color:var(--vs-teal);letter-spacing:.06em;text-transform:uppercase}
+.vital-simulator .vs-live-dot{width:7px;height:7px;border-radius:50%;background:var(--vs-teal);animation:vs-pulse 1.8s ease-out infinite}
+.vital-simulator .vs-stage-tools{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.vital-simulator .vs-mode-switcher,.vital-simulator .vs-camera-presets{display:flex;align-items:center;gap:3px;flex-wrap:wrap}
+.vital-simulator .vs-mode-switcher{padding:3px;background:#f0f5f6;border:1px solid var(--vs-line);border-radius:5px}
+.vital-simulator .vs-mode-switcher button,.vital-simulator .vs-camera-presets button{height:29px;padding:0 8px;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--vs-muted);font-size:9px;font-weight:700;white-space:nowrap}
+.vital-simulator .vs-mode-switcher button.is-selected,.vital-simulator .vs-camera-presets button.is-selected{background:#fff;border-color:#cbdce1;color:var(--vs-blue);box-shadow:0 1px 2px #1836470d}
+.vital-simulator .vs-camera-presets{padding:5px 8px;background:#f9fbfc;border-bottom:1px solid #edf1f2;gap:4px}
+.vital-simulator .vs-camera-presets>div{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.vital-simulator [hidden]{display:none!important}
+.vital-simulator .vs-size-label{margin-left:auto;color:var(--vs-muted);font-size:8px;white-space:nowrap}
+.vital-simulator .vs-camera-presets button{height:26px;border-color:var(--vs-line);background:#fff}
+.vital-simulator .vs-camera-presets button:disabled{opacity:.45;cursor:not-allowed}
+.vital-simulator .vs-model-caption{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:2;max-width:calc(100% - 30px);padding:6px 9px;background:#ffffffde;border:1px solid #d7e1e4;border-radius:4px;color:#49616d;font-size:9px;text-align:center;pointer-events:none;white-space:nowrap}
+.vital-simulator .vs-model-caption[hidden]{display:none}
+.vital-simulator .vs-attachment-indicator{position:absolute;z-index:2;right:12px;top:12px;background:#fff;border:1px solid var(--vs-line);border-radius:4px;padding:5px 7px;color:var(--vs-muted);font-size:8px}
+.vital-simulator .vs-tool,.vital-simulator .vs-view{border:1px solid var(--vs-line);background:white;color:var(--vs-ink);height:29px;min-width:30px;padding:0 8px;border-radius:4px;font-size:10px;font-weight:650}
+.vital-simulator .vs-tool:hover,.vital-simulator .vs-view:hover,.vital-simulator .vs-view.is-selected{background:var(--vs-blue-soft);border-color:#b8d7e2;color:var(--vs-blue)}
+.vital-simulator .vs-views{display:flex;gap:3px;margin-left:3px}
+.vital-simulator .vs-canvas-wrap{height:426px;min-height:340px;position:relative;background:radial-gradient(ellipse at 50% 45%,#f7fbfc 0,#ebf2f4 67%,#e5edef 100%);overflow:hidden;touch-action:none}
+.vital-simulator .vs-canvas-wrap canvas{display:block;width:100%;height:100%;outline:none}
+.vital-simulator .vs-canvas-label{position:absolute;z-index:2;pointer-events:none;left:15px;bottom:13px;max-width:62%;padding:7px 9px;border:1px solid #d4e0e4;background:#ffffffd9;border-radius:4px;font-size:9px;color:var(--vs-muted);backdrop-filter:blur(5px)}
+.vital-simulator .vs-canvas-label strong{display:block;color:var(--vs-ink);font-size:10px}
+.vital-simulator .vs-device-display{position:absolute;z-index:2;right:14px;top:14px;width:min(210px,48%);padding:9px 10px;border:1px solid #d4e0e4;background:#ffffffeb;border-radius:5px;box-shadow:0 3px 10px #18364710;font-size:9px;color:var(--vs-muted);pointer-events:none}
+.vital-simulator .vs-device-display b{display:block;color:var(--vs-blue);font-size:9px;margin-bottom:4px}
+.vital-simulator .vs-device-display span{display:block;color:var(--vs-ink);font-size:10px;font-weight:700;line-height:1.45}
+.vital-simulator .vs-reset{position:absolute;right:12px;bottom:12px;z-index:3}
+.vital-simulator .vs-stage-foot{padding:9px 13px;color:var(--vs-muted);font-size:9px;background:white;border-top:1px solid #edf1f2;display:flex;justify-content:space-between;gap:8px}
+.vital-simulator .vs-form{padding:13px 15px 14px}
+.vital-simulator .vs-form-intro{font-size:10px;color:var(--vs-muted);margin-bottom:12px}
+.vital-simulator .vs-field{margin-bottom:10px;min-width:0}
+.vital-simulator .vs-field label,.vital-simulator .vs-field-label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:10px;font-weight:700;margin-bottom:4px}
+.vital-simulator .vs-optional{font-size:9px;color:#8797a0;font-weight:500}
+.vital-simulator .vs-control{height:35px;width:100%;padding:0 9px;border:1px solid #cbd8dd;border-radius:4px;background:#fff;color:var(--vs-ink);outline:none;font-size:11px}
+.vital-simulator textarea.vs-control{height:56px;padding:8px;resize:vertical}
+.vital-simulator .vs-control:focus{border-color:var(--vs-blue);box-shadow:0 0 0 2px #176b911c}
+.vital-simulator .vs-control[aria-invalid="true"]{border-color:var(--vs-red);background:#fffafa}
+.vital-simulator .vs-units{position:relative}
+.vital-simulator .vs-units .vs-control{padding-right:50px}
+.vital-simulator .vs-unit{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--vs-muted);font-size:9px;pointer-events:none}
+.vital-simulator .vs-grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.vital-simulator .vs-measurements{display:grid;grid-template-columns:1fr 1fr;gap:9px 10px}
+.vital-simulator .vs-field-error{color:var(--vs-red);font-size:9px;margin:3px 0 0;min-height:0}
+.vital-simulator .vs-field-error:empty{display:none}
+.vital-simulator .vs-form-error{background:var(--vs-red-soft);color:#91373d;border-radius:4px;padding:8px 9px;font-size:10px;margin:8px 0;display:none}
+.vital-simulator .vs-form-error.is-visible{display:block}
+.vital-simulator .vs-checkline{font-size:9px;color:var(--vs-muted);display:flex;align-items:flex-start;gap:7px;margin:4px 0 11px}
+.vital-simulator .vs-checkline input{accent-color:var(--vs-blue);margin:2px 0 0;flex:none}
+.vital-simulator .vs-btn{border:0;border-radius:4px;background:var(--vs-blue);color:white;font-weight:750;font-size:11px;height:39px;padding:0 14px;transition:transform .16s,background .16s,box-shadow .16s}
+.vital-simulator .vs-btn:hover{background:#105978;box-shadow:0 4px 12px #176b9126;transform:translateY(-1px)}
+.vital-simulator .vs-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.vital-simulator .vs-btn-secondary{border:1px solid var(--vs-line);background:#fff;color:var(--vs-ink);border-radius:4px;height:32px;padding:0 10px;font-weight:650;font-size:10px}
+.vital-simulator .vs-btn-teal{background:var(--vs-teal)}
+.vital-simulator .vs-btn-teal:hover{background:#0d716b}
+.vital-simulator .vs-wide{width:100%}
+.vital-simulator .vs-safety{display:flex;gap:8px;padding:9px 11px;border:1px solid #f0dfb8;background:var(--vs-amber-soft);border-radius:4px;color:#75571a;font-size:9px;margin-top:11px}
+.vital-simulator .vs-safety b{display:block;color:#6c4e11;margin-bottom:2px;font-size:9px}
+.vital-simulator .vs-workflow{display:none;padding:15px 16px;background:white;border-top:1px solid var(--vs-line)}
+.vital-simulator .vs-workflow.is-visible{display:block;animation:vs-rise .25s ease both}
+.vital-simulator .vs-flow-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.vital-simulator .vs-flow-head strong{font-size:11px}
+.vital-simulator .vs-flow-progress{height:4px;background:#e7edef;border-radius:9px;overflow:hidden;margin-bottom:10px}
+.vital-simulator .vs-flow-progress span{display:block;height:100%;width:0;background:var(--vs-teal);transition:width .35s ease}
+.vital-simulator .vs-flow-step{display:flex;gap:9px;align-items:center;color:var(--vs-muted);font-size:10px;min-height:26px}
+.vital-simulator .vs-flow-step b{width:19px;height:19px;display:grid;place-items:center;border:1px solid var(--vs-line);border-radius:50%;font-size:9px;flex:none}
+.vital-simulator .vs-flow-step.is-current{color:var(--vs-blue);font-weight:750}
+.vital-simulator .vs-flow-step.is-current b{background:var(--vs-blue);border-color:var(--vs-blue);color:white}
+.vital-simulator .vs-flow-step.is-done b{background:var(--vs-teal-soft);border-color:#b9e2d8;color:var(--vs-teal)}
+.vital-simulator .vs-flow-actions{display:flex;gap:7px;margin-top:12px}
+.vital-simulator .vs-history{max-width:1500px;margin:22px auto 0;padding:0 26px}
+.vital-simulator .vs-history-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:13px}
+.vital-simulator .vs-history-heading h2{font-size:20px;margin:0 0 4px}
+.vital-simulator .vs-history-heading p{font-size:11px;color:var(--vs-muted);margin:0}
+.vital-simulator .vs-history-controls{display:flex;align-items:flex-end;gap:7px;flex-wrap:wrap}
+.vital-simulator .vs-history-controls label{display:grid;gap:3px;font-size:9px;color:var(--vs-muted);font-weight:700}
+.vital-simulator .vs-history-controls input,.vital-simulator .vs-history-controls select{height:32px;min-width:125px;border:1px solid var(--vs-line);border-radius:4px;padding:0 7px;background:#fff;color:var(--vs-ink);font-size:10px}
+.vital-simulator .vs-record-notice{display:none;margin:10px 0;padding:9px 11px;background:var(--vs-blue-soft);color:#285c73;border-radius:4px;font-size:10px}
+.vital-simulator .vs-record-notice.is-visible{display:block}
+.vital-simulator .vs-dashboard-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.vital-simulator .vs-data-card{padding:13px 14px;min-width:0}
+.vital-simulator .vs-data-card h3{font:750 12px/1.35 "Aptos","Segoe UI",sans-serif;margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.vital-simulator .vs-card-content{font-size:10px;color:var(--vs-muted);min-height:35px}
+.vital-simulator .vs-card-metric{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid #edf1f2}
+.vital-simulator .vs-card-metric strong{color:var(--vs-ink);text-align:right}
+.vital-simulator .vs-history-count{font-size:9px;font-weight:600;color:var(--vs-muted)}
+.vital-simulator .vs-card-wide{grid-column:span 2}
+.vital-simulator .vs-table-wrap{overflow:auto;max-width:100%}
+.vital-simulator .vs-record-table{width:100%;border-collapse:collapse;font-size:9px;min-width:620px}
+.vital-simulator .vs-record-table th,.vital-simulator .vs-record-table td{padding:7px 6px;text-align:left;border-bottom:1px solid #edf1f2;vertical-align:top}
+.vital-simulator .vs-record-table th{font-size:9px;color:var(--vs-muted);font-weight:700;white-space:nowrap}
+.vital-simulator .vs-row-actions{display:flex;gap:4px}
+.vital-simulator .vs-row-actions button{border:1px solid var(--vs-line);border-radius:3px;background:white;padding:4px 7px;color:var(--vs-ink);font-size:9px}
+.vital-simulator .vs-row-actions button:hover{background:var(--vs-blue-soft)}
+.vital-simulator .vs-source-badge{display:inline-block;padding:2px 6px;border-radius:99px;background:#edf4f6;color:#496776;font-size:8px}
+.vital-simulator .vs-chart-legend{display:flex;gap:11px;flex-wrap:wrap;font-size:9px;color:var(--vs-muted);margin-bottom:5px}
+.vital-simulator .vs-chart-legend span::before{content:"";display:inline-block;width:7px;height:7px;background:var(--vs-blue);border-radius:50%;margin-right:4px}
+.vital-simulator .vs-chart-legend span:nth-child(2)::before{background:var(--vs-teal)}.vital-simulator .vs-chart-legend span:nth-child(3)::before{background:#bd8340}.vital-simulator .vs-chart-legend span:nth-child(4)::before{background:#8b6ca5}.vital-simulator .vs-chart-legend span:nth-child(5)::before{background:#bd5960}
+.vital-simulator .vs-history-charts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.vital-simulator .vs-history-charts svg{width:100%;height:118px;background:#fbfdfe;border:1px solid #edf1f2;border-radius:3px}
+.vital-simulator .vs-empty{font-size:10px;color:var(--vs-muted);margin:4px 0}
+.vital-simulator .vs-flag{padding:7px 8px;border-radius:4px;background:var(--vs-amber-soft);color:#765a20;font-size:9px;margin:5px 0}
+.vital-simulator .vs-flag.urgent{background:var(--vs-red-soft);color:#91373d}
+.vital-simulator .vs-form-actions{display:grid;grid-template-columns:1fr;gap:6px}
+.vital-simulator .vs-form-secondary{height:32px;font-size:10px}
+.vital-simulator .vs-save-state{font-size:9px;color:var(--vs-muted);min-height:12px;margin:2px 0}
+.vital-simulator .vs-analysis-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #edf1f2;margin-top:9px;padding-top:8px;font-size:9px;color:var(--vs-muted)}
+.vital-simulator .vs-analysis-section{margin:8px 0 0;padding:8px 9px;border-radius:4px;background:#f6f9fa;font-size:10px;color:var(--vs-muted)}
+.vital-simulator .vs-analysis-section strong{display:block;color:var(--vs-ink);font-size:10px;margin-bottom:4px}
+.vital-simulator .vs-analysis-summary{font-size:11px;line-height:1.55;color:var(--vs-ink)}
+.vital-simulator .vs-dashboard-active{border-color:#b9d8df;box-shadow:0 0 0 2px #138c8410}
+.vital-simulator .vs-interpret{max-width:1500px;margin:14px auto 0;padding:0 26px}
+.vital-simulator .vs-interpret-inner{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vital-simulator .vs-note{background:#fff;border:1px solid var(--vs-line);border-radius:6px;padding:12px 14px;font-size:10px;color:var(--vs-muted)}
+.vital-simulator .vs-note strong{display:block;color:var(--vs-ink);font-size:11px;margin-bottom:4px}
+.vital-simulator .vs-note p{margin:0}
+.vital-simulator .vs-footer{max-width:1500px;margin:16px auto 0;padding:12px 26px 22px;color:#75858e;font-size:9px}
+.vital-simulator .vs-report-view{display:none}
+.vital-simulator .vs-report-view.is-visible{display:block;animation:vs-rise .28s ease both}
+.vital-simulator .vs-report-sheet{max-width:900px;margin:24px auto 46px;background:#fff;border:1px solid var(--vs-line);border-radius:6px;box-shadow:0 8px 30px #1836470d;padding:34px 40px}
+.vital-simulator .vs-report-top{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;border-bottom:2px solid var(--vs-blue);padding-bottom:17px;margin-bottom:19px}
+.vital-simulator .vs-report-top h2{font-size:21px;margin-bottom:5px}
+.vital-simulator .vs-report-meta{text-align:right;font-size:10px;color:var(--vs-muted)}
+.vital-simulator .vs-report-meta strong{color:var(--vs-ink)}
+.vital-simulator .vs-report-section{margin:18px 0}
+.vital-simulator .vs-report-section h3{font-size:12px;padding-bottom:6px;border-bottom:1px solid var(--vs-line);margin-bottom:8px}
+.vital-simulator .vs-report-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.vital-simulator .vs-report-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #eef2f3;padding:7px 0;font-size:11px}
+.vital-simulator .vs-report-row span{color:var(--vs-muted)}
+.vital-simulator .vs-report-row b{text-align:right}
+.vital-simulator .vs-report-callout{padding:11px;background:#f3f8fa;border-left:3px solid var(--vs-teal);font-size:11px;margin:12px 0}
+.vital-simulator .vs-report-disclaimer{background:var(--vs-amber-soft);border:1px solid #efdfbd;border-radius:4px;padding:11px;font-size:10px;color:#6f551e}
+.vital-simulator .vs-clinician-lines{height:78px;border-bottom:1px solid #bccbd0;background:repeating-linear-gradient(to bottom,transparent 0,transparent 25px,#e5ecee 26px)}
+.vital-simulator .vs-report-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:20px auto 40px}
+.vital-simulator .vs-report-hidden{display:none!important}
+.vital-simulator :focus-visible{outline:2px solid #118b84;outline-offset:2px}
+@keyframes vs-pulse{0%{box-shadow:0 0 0 0 #138c8450}70%{box-shadow:0 0 0 5px #138c8400}100%{box-shadow:0 0 0 0 #138c8400}}
+@keyframes vs-rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1100px){.vital-simulator .vs-workspace{grid-template-columns:200px minmax(350px,1fr)}.vital-simulator .vs-input-panel{grid-column:1/-1}.vital-simulator .vs-input-panel .vs-form{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.vital-simulator .vs-input-panel .vs-form-intro,.vital-simulator .vs-input-panel .vs-consent,.vital-simulator .vs-input-panel .vs-form-error,.vital-simulator .vs-input-panel .vs-safety,.vital-simulator .vs-input-panel #vsStart{grid-column:1/-1}.vital-simulator .vs-input-panel .vs-fields-left,.vital-simulator .vs-input-panel .vs-fields-right{min-width:0}}
+@media(max-width:700px){.vital-simulator .vs-wrap{padding:0 14px}.vital-simulator .vs-header{height:66px}.vital-simulator .vs-brand-name{font-size:12px}.vital-simulator .vs-brand-sub{font-size:9px}.vital-simulator .vs-back{font-size:0;width:37px;padding:0;justify-content:center}.vital-simulator .vs-back span{font-size:17px}.vital-simulator .vs-crumb{margin:11px 0 13px}.vital-simulator .vs-intro{align-items:flex-start;flex-direction:column;gap:9px}.vital-simulator h1{font-size:22px}.vital-simulator .vs-workspace{grid-template-columns:1fr;gap:10px}.vital-simulator .vs-stage{grid-row:1}.vital-simulator .vs-hardware-panel{grid-row:2}.vital-simulator .vs-input-panel{grid-row:3;grid-column:auto}.vital-simulator .vs-canvas-wrap{height:min(390px,86vw);min-height:290px}.vital-simulator .vs-hardware{display:grid;grid-template-columns:1fr 1fr;gap:0 5px}.vital-simulator .vs-purpose{margin-top:0}.vital-simulator .vs-input-panel .vs-form{display:block}.vital-simulator .vs-interpret{padding:0 14px}.vital-simulator .vs-interpret-inner{grid-template-columns:1fr;gap:9px}.vital-simulator .vs-footer{padding-left:14px;padding-right:14px}.vital-simulator .vs-report-sheet{margin:14px 14px 30px;padding:22px 18px}.vital-simulator .vs-report-top{flex-direction:column}.vital-simulator .vs-report-meta{text-align:left}.vital-simulator .vs-report-grid{grid-template-columns:1fr}.vital-simulator .vs-stage-tools .vs-view{padding:0 6px}.vital-simulator .vs-stage-tools .vs-tool{padding:0 7px}.vital-simulator .vs-history{padding:0 14px}.vital-simulator .vs-history-heading{display:block}.vital-simulator .vs-history-controls{margin-top:10px}.vital-simulator .vs-history-controls label{flex:1;min-width:90px}.vital-simulator .vs-history-controls input,.vital-simulator .vs-history-controls select{min-width:0;width:100%}.vital-simulator .vs-dashboard-grid{grid-template-columns:1fr}.vital-simulator .vs-card-wide{grid-column:auto}.vital-simulator .vs-history-charts{grid-template-columns:1fr}.vital-simulator .vs-history-charts svg{height:130px}}
+@media(max-width:700px){.vital-simulator .vs-stagebar{align-items:flex-start;flex-direction:column}.vital-simulator .vs-stage-tools{justify-content:flex-start}.vital-simulator .vs-camera-presets{overflow-x:auto;flex-wrap:nowrap}.vital-simulator .vs-camera-presets button{flex:none}.vital-simulator .vs-model-caption{white-space:normal;width:max-content;max-width:calc(100% - 24px)}}
+@media(max-width:380px){.vital-simulator .vs-stage-tools{gap:3px}.vital-simulator .vs-mode{font-size:9px}.vital-simulator .vs-view{height:26px;font-size:9px}.vital-simulator .vs-stagebar{padding:10px}.vital-simulator .vs-canvas-wrap{min-height:270px}}
+@media(prefers-reduced-motion:reduce){.vital-simulator *, .vital-simulator *::before,.vital-simulator *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+@media print{body{background:#fff!important}.vital-simulator .vs-header,.vital-simulator #vsSimulatorView,.vital-simulator .vs-crumb,.vital-simulator .vs-intro,.vital-simulator .vs-footer,.vital-simulator .vs-report-actions{display:none!important}.vital-simulator .vs-report-view{display:block!important}.vital-simulator .vs-report-sheet{box-shadow:none;border:0;margin:0 auto;max-width:none;padding:0}.vital-simulator{background:#fff!important}}
+</style>
+</head>
+<body>
+<div class="vital-simulator" id="vitalSimulator">
+<header class="vs-header"><div class="vs-wrap vs-head-inner"><div class="vs-brand"><div class="vs-mark" aria-hidden="true">R+</div><div><div class="vs-brand-name">SICKLECARE MONITORING PATCH</div><div class="vs-brand-sub">RX ELEVATE</div></div></div><a class="vs-back" href="SickleCare%20AI.html#home" aria-label="Back to website"><span aria-hidden="true">&#8592;</span> Back to Website</a></div></header>
+<main class="vs-wrap">
+<div class="vs-crumb"><a href="SickleCare%20AI.html#home">Home</a> <span aria-hidden="true">/</span> <strong>3D Simulator</strong></div>
+<div class="vs-intro" id="vsIntro"><div><div class="vs-eyebrow">RX ELEVATE · WEARABLE DEVICE SIMULATION</div><h1>SickleCare Monitoring Patch</h1><p class="vs-subtitle">Explore the wearable, enter demo measurements, and link them to the SickleCare patient view.</p></div><div class="vs-status"><span class="vs-dot" aria-hidden="true"></span><span id="vsStatusText">Demo ready · no sensors connected</span><span class="vs-link-state" id="vsWebsiteState">Website not linked</span><button class="vs-link-btn" id="vsWebsiteLink" type="button">Connect website</button></div></div>
+<section id="vsSimulatorView" aria-label="Wearable monitoring patch simulator">
+<div class="vs-workspace">
+<aside class="vs-panel vs-hardware-panel" aria-label="Device components"><div class="vs-panel-head"><div><h2 class="vs-panel-title">Device components</h2><p class="vs-panel-kicker">Select a module to inspect</p></div><span aria-hidden="true" style="font-size:17px;color:#77909b">&#9776;</span></div><div class="vs-hardware" id="vsParts"></div><div class="vs-purpose" id="vsPurpose" aria-live="polite"><strong>Explore the station</strong>Select a component to see its intended role in the demo.</div></aside>
+<section class="vs-panel vs-stage" aria-label="Interactive 3D device"><div class="vs-stagebar"><div class="vs-mode"><span class="vs-live-dot" aria-hidden="true"></span>Simulation mode</div><div class="vs-stage-tools"><button class="vs-tool" type="button" id="vsZoomOut" aria-label="Zoom out" title="Zoom out">−</button><button class="vs-tool" type="button" id="vsZoomIn" aria-label="Zoom in" title="Zoom in">+</button><div class="vs-views" role="group" aria-label="Camera view"><button class="vs-view is-selected" data-view="iso" type="button">Iso</button><button class="vs-view" data-view="front" type="button">Front</button><button class="vs-view" data-view="side" type="button">Side</button></div><button class="vs-tool" type="button" id="vsAssemble" title="Toggle exploded view" aria-label="Toggle exploded view">Explode</button></div></div><div class="vs-canvas-wrap" id="vsCanvasWrap" aria-label="Interactive 3D wearable monitoring patch model. Drag to rotate; shift-drag or right-drag to pan; use plus and minus to zoom."><div class="vs-canvas-label"><strong>RX ELEVATE · WEARABLE PATCH</strong>Procedural 3D model · no sensors connected</div><div class="vs-device-display" id="vsDeviceDisplay" aria-live="polite"><b>Companion app preview</b><span>Enter values to begin the demo</span></div><button class="vs-tool vs-reset" type="button" id="vsReset" aria-label="Reset camera" title="Reset camera">Reset view</button></div><div class="vs-stage-foot"><span>Drag to rotate · Shift/right-drag to pan · Scroll to zoom</span><span id="vsRenderState">Preparing 3D view…</span></div><div class="vs-workflow" id="vsWorkflow" aria-live="polite"><div class="vs-flow-head"><strong id="vsFlowTitle">Simulation sequence</strong><span class="vs-panel-kicker" id="vsFlowCount">Step 0 of 6</span></div><div class="vs-flow-progress" aria-hidden="true"><span id="vsFlowBar"></span></div><div id="vsFlowSteps"></div><div class="vs-flow-actions"><button class="vs-btn vs-btn-secondary" type="button" id="vsCancel">Cancel simulation</button><button class="vs-btn vs-btn-teal" type="button" id="vsGenerate" hidden>Generate report</button></div></div></section>
+<aside class="vs-panel vs-input-panel" aria-label="Manual patient input"><div class="vs-panel-head"><div><h2 class="vs-panel-title">Manual patient input</h2><p class="vs-panel-kicker">Enter vital readings and symptoms</p></div><span aria-hidden="true" style="font-size:17px;color:var(--vs-teal)">&#9998;</span></div><form class="vs-form" id="vsForm" novalidate><p class="vs-form-intro">Enter blood pressure, pulse rate, SpO₂, body temperature, and any symptoms. Entries are manually recorded with the current date and time; this prototype does not measure them.</p><div class="vs-fields-left"><div class="vs-field"><label for="vsIdentity">Patient name or ID <span class="vs-optional">Optional</span></label><input class="vs-control" id="vsIdentity" name="identity" type="text" maxlength="80" autocomplete="off" placeholder="e.g. Clinic ID 0042"></div><div class="vs-grid2"><div class="vs-field"><label for="vsAge">Age <span class="vs-optional">Optional</span></label><div class="vs-units"><input class="vs-control" id="vsAge" name="age" type="number" min="0" max="120" step="1" inputmode="numeric" placeholder="Years"><span class="vs-unit">years</span></div><p class="vs-field-error" id="vsAgeError"></p></div><div class="vs-field"><label for="vsSex">Sex <span class="vs-optional">Optional</span></label><select class="vs-control" id="vsSex" name="sex"><option value="">Not provided</option><option>Female</option><option>Male</option><option>Intersex</option><option>Another identity</option><option>Prefer not to say</option></select></div></div><div class="vs-field"><div class="vs-field-label">Blood pressure <span>*</span></div><div class="vs-grid2"><div><label class="vs-optional" for="vsSystolic">Systolic</label><div class="vs-units"><input class="vs-control" id="vsSystolic" name="systolic" required type="number" min="50" max="300" step="1" inputmode="decimal" placeholder="120"><span class="vs-unit">mmHg</span></div><p class="vs-field-error" id="vsSystolicError"></p></div><div><label class="vs-optional" for="vsDiastolic">Diastolic</label><div class="vs-units"><input class="vs-control" id="vsDiastolic" name="diastolic" required type="number" min="30" max="200" step="1" inputmode="decimal" placeholder="80"><span class="vs-unit">mmHg</span></div><p class="vs-field-error" id="vsDiastolicError"></p></div></div></div></div><div class="vs-fields-right"><div class="vs-measurements"><div class="vs-field"><label for="vsPulse">Pulse rate <span>*</span></label><div class="vs-units"><input class="vs-control" id="vsPulse" name="pulse" required type="number" min="20" max="250" step="1" inputmode="decimal" placeholder="72"><span class="vs-unit">bpm</span></div><p class="vs-field-error" id="vsPulseError"></p></div><div class="vs-field"><label for="vsSpo2">SpO&#8322; <span>*</span></label><div class="vs-units"><input class="vs-control" id="vsSpo2" name="spo2" required type="number" min="50" max="100" step="0.1" inputmode="decimal" placeholder="97"><span class="vs-unit">%</span></div><p class="vs-field-error" id="vsSpo2Error"></p></div><div class="vs-field"><label for="vsTemp">Body temperature <span>*</span></label><div class="vs-units"><input class="vs-control" id="vsTemp" name="temperature" required type="number" min="30" max="45" step="0.1" inputmode="decimal" placeholder="36.8"><span class="vs-unit">&#176;C</span></div><p class="vs-field-error" id="vsTempError"></p></div><div class="vs-field"><label for="vsSymptoms">Symptoms <span class="vs-optional">Optional</span></label><input class="vs-control" id="vsSymptoms" name="symptoms" type="text" maxlength="240" placeholder="Patient-reported"></div></div><div class="vs-field"><label for="vsNotes">Notes <span class="vs-optional">Optional</span></label><textarea class="vs-control" id="vsNotes" name="notes" maxlength="500" placeholder="Additional context for clinician review"></textarea></div></div><div class="vs-form-error" id="vsFormError" role="alert"></div><label class="vs-checkline vs-consent"><input type="checkbox" id="vsConfirm"><span>I confirm these are manually entered demo values. They are not readings from connected sensors.</span></label><button class="vs-btn vs-wide" id="vsStart" type="submit">Save measurement</button><div class="vs-safety"><span aria-hidden="true">&#9888;</span><div><b>Prototype demonstration only</b>Not a diagnosis or substitute for clinical assessment. Concerning symptoms or readings should be reviewed by a qualified professional.</div></div></form></aside>
+</div>
+</section>
+<section class="vs-history" id="vsHistory" aria-label="Patient measurement history">
+<div class="vs-history-heading"><div><div class="vs-eyebrow">LOCAL PATIENT RECORDS</div><h2>Measurements and longitudinal analysis</h2><p>Saved in this browser only. Select a patient ID to review their own records.</p></div><div class="vs-history-controls"><label>Patient records<select id="vsPatientFilter" aria-label="Filter records by patient ID"><option value="">Select patient ID</option></select></label><label>From<input id="vsDateFrom" type="date" aria-label="Start date"></label><label>To<input id="vsDateTo" type="date" aria-label="End date"></label><button class="vs-btn-secondary" type="button" id="vsApplyFilters">Apply filters</button></div></div>
+<div id="vsRecordNotice" role="status" class="vs-record-notice">No local records loaded yet. Save a measurement to build your history.</div>
+<div class="vs-dashboard-grid">
+<article class="vs-panel vs-data-card vs-card-wide" id="vsAnalysisCard"><h3>AI Health Analysis <span id="vsAnalysisProvider" class="vs-history-count">Rule-based fallback</span></h3><div id="vsAnalysisContent" class="vs-card-content"><p>Save a measurement to start monitoring. Analysis uses only the selected patient record’s saved readings.</p></div><div class="vs-analysis-footer"><span id="vsAnalysisTimestamp">Not analyzed yet</span><button class="vs-btn-secondary" type="button" id="vsExportAnalysis" disabled>Export Report (optional)</button></div></article>
+<article class="vs-panel vs-data-card"><h3>Latest measurements</h3><div id="vsLatestRecord" class="vs-card-content">No measurement selected.</div></article>
+<article class="vs-panel vs-data-card"><h3>Previous measurement</h3><div id="vsPreviousRecord" class="vs-card-content">No previous measurement.</div></article>
+<article class="vs-panel vs-data-card"><h3>Daily health summary</h3><div id="vsDailySummary" class="vs-card-content">Save a measurement to begin.</div></article>
+<article class="vs-panel vs-data-card"><h3>Change since previous reading</h3><div id="vsChangeSummary" class="vs-card-content">A second reading is needed to calculate change.</div></article>
+<article class="vs-panel vs-data-card"><h3>Seven-day trend</h3><div id="vsWeeklyTrend" class="vs-card-content">More measurements are needed for a trend.</div></article>
+<article class="vs-panel vs-data-card"><h3>Thirty-day trend</h3><div id="vsMonthlyTrend" class="vs-card-content">More measurements are needed for a trend.</div></article>
+<article class="vs-panel vs-data-card vs-card-wide"><h3>Measurement history <span id="vsHistoryCount" class="vs-history-count">0 records</span></h3><div class="vs-table-wrap"><table class="vs-record-table"><thead><tr><th>Date and time</th><th>Vitals</th><th>Symptoms / pain</th><th>Source</th><th>Actions</th></tr></thead><tbody id="vsHistoryRows"><tr><td colspan="5">No records for this patient and date range.</td></tr></tbody></table></div></article>
+<article class="vs-panel vs-data-card"><h3>Data quality and missing days</h3><div id="vsDataQuality" class="vs-card-content">No records to assess.</div></article>
+<article class="vs-panel vs-data-card vs-card-wide"><h3>Vitals over time</h3><div class="vs-chart-legend"><span>Blood pressure · systolic</span><span>Blood pressure · diastolic</span><span>Pulse</span><span>SpO₂</span><span>Temperature</span></div><div id="vsHistoryCharts" class="vs-history-charts"><p class="vs-empty">Save at least two measurements to display history charts.</p></div></article>
+</div></section>
+<div class="vs-interpret"><div class="vs-interpret-inner"><div class="vs-note"><strong>How the informational flags work</strong><p>Reference thresholds are explicitly shown with any flags; they are educational prompts, not diagnostic criteria. Age, symptoms, setting, measurement quality, and clinician guidance can change interpretation. A value without a flag is not proof of health.</p></div><div class="vs-note"><strong>Privacy and data source</strong><p>Records are stored in IndexedDB in this browser and are not sent to a server. No AI endpoint is configured; the displayed analysis is a local rule-based fallback. Do not place an API key in this page. This local prototype has no authentication, encryption, or access controls and is not suitable for production patient records. The 3D patch is visual only; saved values come from the user, never a sensor.</p></div></div></div>
+<footer class="vs-footer">RX ELEVATE · SickleCare wearable monitoring patch · Educational software prototype</footer>
+<div class="vs-report-view" id="vsReportView" aria-label="Simulated health report"><article class="vs-report-sheet" id="vsReportSheet"></article><div class="vs-report-actions"><button class="vs-btn" type="button" id="vsPrint">Print / Save as PDF</button><button class="vs-btn vs-btn-secondary" type="button" id="vsReturn">Return to simulator</button><button class="vs-btn vs-btn-teal" type="button" id="vsNew">Start new simulation</button></div></div>
+</main>
+</div>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {interpretMeasurements,referenceRanges} from './vital-station-simulator/interpretation.js';
+import {deleteMeasurement,listAllMeasurements,localDateTimeValue,saveMeasurement} from './vital-station-simulator/measurement-store.js';
+import {analyzePatientHistory,localDayKey,metricChange,readingFlags,summarizeRecords,validateMeasurement} from './vital-station-simulator/measurement-analysis.js';
+
+const parts = [
+  {id:'led', short:'LED', name:'LED indicator', desc:'Power, recording, and charge status', purpose:'Shows an illustrative status light for power, recording, or charging. It does not confirm a real device state.'},
+  {id:'sensor', short:'SENS', name:'Multi-sensor module', desc:'Heart rate, temperature, and motion', purpose:'Represents the wearable sensing electronics. No live sensor is present; values are manually entered.'},
+  {id:'adhesive', short:'PAD', name:'Flexible adhesive patch', desc:'Skin-friendly wearable backing', purpose:'A layered, flexible adhesive backing inspired by the supplied product image.'},
+  {id:'port', short:'USB', name:'Charging port', desc:'Rechargeable device connection', purpose:'An illustrative charging port. The model has no battery or charging electronics.'},
+  {id:'battery', short:'BAT', name:'Rechargeable battery', desc:'Internal power layer', purpose:'Shows the conceptual rechargeable battery layer in the exploded view; it is not functional.'},
+  {id:'cover', short:'RX', name:'Water-resistant top cover', desc:'Slim protective enclosure', purpose:'The rounded protective cover carries RX ELEVATE branding and contains the conceptual electronics.'}
+];
+const $ = id => document.getElementById(id);
+const state = {selected:null,data:null,phase:0,step:0,timer:null,exploded:false,report:false,linked:false};
+const channelName = 'sicklecare-rx-elevate-v1';
+const channelProtocol = 2;
+const handoffKey = 'sicklecare-rx-elevate-handoff-v2';
+const deviceChannel = 'BroadcastChannel' in window ? new BroadcastChannel(channelName) : null;
+let allRecords=[];
+let editingRecordId=null;
+let monitoringStarted=false;
+let latestAnalysis=null;
+
+$('vsParts').innerHTML = parts.map(part => `<button type="button" class="vs-part" data-part="${part.id}" aria-pressed="false"><span class="vs-part-icon" aria-hidden="true">${part.short}</span><span><span class="vs-part-name">${part.name}</span><span class="vs-part-desc">${part.desc}</span></span><span class="vs-part-arrow" aria-hidden="true">&#8250;</span></button>`).join('');
+$('vsFlowSteps').innerHTML = ['Patch status indicator activates','Entered pulse and SpO₂ displayed','Entered temperature displayed','Companion app summary updates','Values remain linked while connected','Generate a clinician-review report'].map((label,index) => `<div class="vs-flow-step" data-flow-step="${index}"><b>${index+1}</b><span>${label}</span></div>`).join('');
+$('vsIdentity').value='My readings';
+$('vsIdentity').closest('.vs-field').hidden=true;
+$('vsIdentity').closest('.vs-field').insertAdjacentHTML('afterend',`<div class="vs-field"><label for="vsMeasuredAt">Measurement date and time <span>*</span></label><input class="vs-control" id="vsMeasuredAt" type="datetime-local" required><p class="vs-field-error" id="vsMeasuredAtError"></p></div><div class="vs-field"><label for="vsSource">Measurement source <span>*</span></label><select class="vs-control" id="vsSource" required><option value="manual">Manual entry · measured externally</option><option value="external">External device · value transcribed by user</option></select><p class="vs-field-error" id="vsSourceError"></p></div><div class="vs-field"><label for="vsPain">Pain score <span class="vs-optional">Optional</span></label><div class="vs-units"><input class="vs-control" id="vsPain" type="number" min="0" max="10" step="1" inputmode="numeric" placeholder="0–10"><span class="vs-unit">/10</span></div><p class="vs-field-error" id="vsPainError"></p></div>`);
+$('vsMeasuredAt').closest('.vs-field').hidden=true;
+$('vsSource').closest('.vs-field').hidden=true;
+$('vsPain').closest('.vs-field').hidden=true;
+$('vsNotes').closest('.vs-field').hidden=true;
+$('vsAge').closest('.vs-grid2').hidden=true;
+$('vsConfirm').checked=true;
+document.querySelector('.vs-checkline').hidden=true;
+$('vsSource').value='manual';
+$('vsStart').textContent='Save measurement';
+$('vsStart').insertAdjacentHTML('afterend','<div class="vs-form-actions"><button class="vs-btn vs-btn-secondary vs-form-secondary" type="button" id="vsPreviewFlow">Preview patch sequence</button><button class="vs-btn vs-btn-secondary vs-form-secondary" type="button" id="vsReportRecord" disabled>Export Report (optional)</button><a class="vs-btn vs-btn-teal vs-wide" id="vsWebsiteResults" href="SickleCare%20AI.html#patient" target="_blank" rel="noopener" hidden>View result on website</a><p class="vs-save-state" id="vsSaveState" role="status"></p></div>');
+
+function esc(value){return String(value ?? '').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
+function selectPart(id,fromModel=false){
+  state.selected=id;
+  document.querySelectorAll('.vs-part').forEach(button=>{const active=button.dataset.part===id;button.classList.toggle('is-active',active);button.setAttribute('aria-pressed',String(active));});
+  const part=parts.find(item=>item.id===id);
+  $('vsPurpose').innerHTML=`<strong>${part.name}</strong>${part.purpose}`;
+  if(!fromModel) highlightModel(id);
+}
+function clearErrors(){document.querySelectorAll('.vs-field-error').forEach(el=>el.textContent='');document.querySelectorAll('.vs-control').forEach(el=>el.removeAttribute('aria-invalid'));$('vsFormError').textContent='';$('vsFormError').classList.remove('is-visible');}
+function fieldError(id,message){const input=$(id),error=$(id+'Error');if(error)error.textContent=message;if(input)input.setAttribute('aria-invalid','true');}
+function validate(){
+  clearErrors();
+  const patientId=$('vsPatientFilter').value||$('vsIdentity').value.trim()||'My readings';
+  $('vsIdentity').value=patientId;
+  $('vsMeasuredAt').value=editingRecordId?$('vsMeasuredAt').value:localDateTimeValue();
+  const raw={patientId,measuredAt:$('vsMeasuredAt').value,systolic:$('vsSystolic').value,diastolic:$('vsDiastolic').value,pulse:$('vsPulse').value,spo2:$('vsSpo2').value,temperature:$('vsTemp').value,pain:'',source:'manual',symptoms:$('vsSymptoms').value.trim(),notes:''};
+  const errors=validateMeasurement(raw),fieldMap={patientId:'vsIdentity',measuredAt:'vsMeasuredAt',systolic:'vsSystolic',diastolic:'vsDiastolic',pulse:'vsPulse',spo2:'vsSpo2',temperature:'vsTemp',source:'vsSource'};
+  const first=Object.keys(errors)[0];
+  for(const [key,message] of Object.entries(errors))fieldError(fieldMap[key],message);
+  if(first){$('vsFormError').textContent='Fix the highlighted fields before saving.';$('vsFormError').classList.add('is-visible');$(fieldMap[first]).focus();return null;}
+  return {...raw,identity:raw.patientId,age:null,sex:'',systolic:Number(raw.systolic),diastolic:Number(raw.diastolic),pulse:Number(raw.pulse),spo2:Number(raw.spo2),temperature:Number(raw.temperature),pain:null,measuredAt:new Date(raw.measuredAt).toISOString(),created:new Date()};
+}
+function updateWebsiteLink(){
+  $('vsWebsiteState').textContent=state.linked?'Patient view linked · software only':'Patient view not linked';
+  $('vsWebsiteLink').textContent=state.linked?'Unlink patient view':'Link patient view';
+  $('vsWebsiteLink').setAttribute('aria-pressed',String(state.linked));
+}
+function publishStationValues(){
+  if(!deviceChannel||!state.linked)return;
+  const d=latestAnalysis?.latest;
+  if(!d){deviceChannel.postMessage({type:'station:clear',protocol:channelProtocol});localStorage.removeItem(handoffKey);return;}
+  drawScreen(activeScreenMode);
+  const message={type:'station:data',protocol:channelProtocol,source:'saved-user-record',updatedAt:new Date().toISOString(),measuredAt:d.measuredAt,measurementSource:d.sourceLabel,patient:{identity:d.patientId,age:d.age,sex:d.sex},values:{systolic:d.systolic,diastolic:d.diastolic,pulse:d.pulse,spo2:d.spo2,temperature:d.temperature},symptoms:d.symptoms,notes:d.notes,analysis:latestAnalysis?{provider:latestAnalysis.provider,analyzedAt:latestAnalysis.analyzedAt,latestSummary:latestAnalysis.latestSummary,observedChanges:latestAnalysis.observedChanges,historicalTrend:latestAnalysis.historicalTrend,concerns:latestAnalysis.concerns,dataQuality:latestAnalysis.dataQuality,nextStep:latestAnalysis.nextStep,disclaimer:latestAnalysis.disclaimer}:null};
+  try{localStorage.setItem(handoffKey,JSON.stringify(message));}catch(error){console.warn('Could not cache the patient-page handoff in local storage.',error);}
+  deviceChannel.postMessage(message);
+}
+function setWebsiteLink(connected){
+  state.linked=connected;
+  if(state.linked&&!state.data){const patientId=$('vsPatientFilter').value||$('vsIdentity').value.trim();state.data=allRecords.filter(record=>record.patientId===patientId).sort((a,b)=>new Date(b.measuredAt)-new Date(a.measuredAt))[0]||null;if(state.data)state.data={...state.data,identity:state.data.patientId,created:new Date(state.data.measuredAt)};}
+  updateWebsiteLink();
+  if(!connected)localStorage.removeItem(handoffKey);
+  if(!deviceChannel)return;
+  deviceChannel.postMessage({type:'station:link',protocol:channelProtocol,connected:state.linked,name:'RX ELEVATE SickleCare Monitoring Patch'});
+  if(state.linked)publishStationValues();
+}
+if(deviceChannel)deviceChannel.addEventListener('message',event=>{
+  if(event.data?.protocol!==channelProtocol)return;
+  if(event.data?.type==='patient:hello'){
+    deviceChannel.postMessage({type:'station:link',protocol:channelProtocol,connected:state.linked,name:'RX ELEVATE SickleCare Monitoring Patch'});
+    if(state.linked)publishStationValues();
+  }
+  if(event.data?.type==='patient:request-link')setWebsiteLink(Boolean(event.data.connected));
+});
+$('vsWebsiteLink').addEventListener('click',()=>setWebsiteLink(!state.linked));
+updateWebsiteLink();
+$('vsWebsiteResults').addEventListener('click',()=>{setWebsiteLink(true);});
+let scene,camera,renderer,model,patchModel,upperBody,upperArm,patchAttachment,raycaster,pointer,lookAt,desiredCameraPosition,desiredCameraTarget,desiredCameraUp,componentGroups={},screenCanvas,screenContext,screenTexture,activeScreenMode='idle',raf=0;
+const PATCH_SIZE=Object.freeze({length:.035,width:.025,thickness:.006,adhesiveLength:.043,adhesiveWidth:.032});
+const WORLD_SCALE='1 Three.js world unit = 1 metre';
+const ARM_ATTACHMENT=Object.freeze({position:new THREE.Vector3(-.025,-.155,.0674),rotation:new THREE.Euler(0,0,-.08)});
+let activeView='iso',viewerMode='device';
+function mat(color,roughness=.45,metalness=.06,extra={}){return new THREE.MeshStandardMaterial({color,roughness,metalness,...extra});}
+const mats={shell:mat('#e7edef',.38,.08),white:mat('#f9fbfb',.32,.08),blue:mat('#176b91',.32,.2),teal:mat('#168d86',.32,.18),dark:mat('#182c37',.28,.22),rubber:mat('#263c48',.7,.02),silver:mat('#9baeb4',.3,.65),screen:null,glow:mat('#7de4d0',.25,.1,{emissive:'#0d4d4a',emissiveIntensity:.4})};
+function box(parent,name,size,position,material,component=null,radius=false){let geometry=new THREE.BoxGeometry(...size);let mesh=new THREE.Mesh(geometry,material);mesh.position.set(...position);mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=name;if(component)mesh.userData.component=component;parent.add(mesh);return mesh;}
+function roundedBox(parent,name,width,height,depth,radius,position,material,component){const shape=new THREE.Shape();const r=Math.min(radius,width/2,height/2);shape.moveTo(-width/2+r,-height/2);shape.lineTo(width/2-r,-height/2);shape.absarc(width/2-r,-height/2+r,r,-Math.PI/2,0,false);shape.lineTo(width/2,height/2-r);shape.absarc(width/2-r,height/2-r,r,0,Math.PI/2,false);shape.lineTo(-width/2+r,height/2);shape.absarc(-width/2+r,height/2-r,r,Math.PI/2,Math.PI,false);shape.lineTo(-width/2,-height/2+r);shape.absarc(-width/2+r,-height/2+r,r,Math.PI,Math.PI*1.5,false);const bevel=Math.min(depth*.18,r*.18);const geometry=new THREE.ExtrudeGeometry(shape,{depth:Math.max(.000001,depth-2*bevel),bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:bevel,bevelThickness:bevel,curveSegments:8});geometry.translate(0,0,-(depth-2*bevel)/2);const mesh=new THREE.Mesh(geometry,material);mesh.position.set(...position);mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=name;if(component)mesh.userData.component=component;parent.add(mesh);return mesh;}
+function cylinder(parent,name,radius,height,position,material,axis='y',component=null,segments=24){const geometry=new THREE.CylinderGeometry(radius,radius,height,segments);const mesh=new THREE.Mesh(geometry,material);mesh.position.set(...position);if(axis==='z')mesh.rotation.x=Math.PI/2;if(axis==='x')mesh.rotation.z=Math.PI/2;mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=name;if(component)mesh.userData.component=component;parent.add(mesh);return mesh;}
+function drawScreen(mode){const d=state.data,display=$('vsDeviceDisplay');let label='Companion app preview',value='Enter values to begin the demo';if(mode==='welcome'){label='Patch status';value='Indicator active · simulation only';}else if(mode==='bp'&&d){label='Manual blood pressure';value=`${d.systolic}/${d.diastolic} mmHg · not patch-sensed`;}else if(mode==='pulse'&&d){label='Manual pulse + SpO₂';value=`${d.pulse} bpm · ${d.spo2}%`;}else if(mode==='temp'&&d){label='Manual temperature';value=`${d.temperature.toFixed(1)} °C`;}else if(mode==='summary'&&d){label='Companion app · manual values';value=`BP ${d.systolic}/${d.diastolic} · ${d.pulse} bpm · ${d.spo2}% · ${d.temperature.toFixed(1)} °C`;}display.innerHTML=`<b>${esc(label)}</b><span>${esc(value)}</span>`;}
+function addLabel(parent,text,position){const canvas=document.createElement('canvas');canvas.width=512;canvas.height=96;const ctx=canvas.getContext('2d');ctx.fillStyle='#f7fbfc';ctx.fillRect(0,0,512,96);ctx.fillStyle='#176b91';ctx.font='700 31px Arial';ctx.fillText(text,18,61);const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;const label=new THREE.Mesh(new THREE.PlaneGeometry(.019,.0036),new THREE.MeshBasicMaterial({map:texture,transparent:true,side:THREE.DoubleSide}));label.position.set(...position);parent.add(label);return label;}
+function makeTube(parent,points,radius,material,component){const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,32,radius,10,false),material);mesh.castShadow=true;if(component)mesh.userData.component=component;parent.add(mesh);return mesh;}
+function capsuleBetween(parent,name,start,end,radius,material){const from=new THREE.Vector3(...start),to=new THREE.Vector3(...end),delta=to.clone().sub(from),length=delta.length(),mesh=new THREE.Mesh(new THREE.CapsuleGeometry(radius,Math.max(.001,length-radius*2),6,16),material);mesh.position.copy(from).add(to).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=name;parent.add(mesh);return mesh;}
+function sphere(parent,name,radius,position,material,scale=[1,1,1]){const mesh=new THREE.Mesh(new THREE.SphereGeometry(radius,24,16),material);mesh.position.set(...position);mesh.scale.set(...scale);mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=name;parent.add(mesh);return mesh;}
+function buildHuman(){
+  upperBody=new THREE.Group();upperBody.name='procedural adult male upper body';scene.add(upperBody);
+  const skin=mat('#c9917c',.92,0),shirt=mat('#dce6e8',.78,0),shirtAccent=mat('#193b50',.78,0);
+  const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.205,.39,8,24),shirt);torso.position.set(0,.08,-.18);torso.scale.set(1.14,1,.72);torso.castShadow=true;torso.receiveShadow=true;upperBody.add(torso);
+  const chest=new THREE.Mesh(new THREE.CapsuleGeometry(.168,.28,6,20),shirtAccent);chest.position.set(0,.03,.005);chest.scale.set(1.15,1,.58);chest.castShadow=true;upperBody.add(chest);
+  cylinder(upperBody,'neck',.062,.12,[0,.41,-.06],skin,'y',null,24);sphere(upperBody,'head',.105,[0,.565,-.07],skin,[.88,1.22,.88]);
+  for(const side of [-1,1]){const shoulderX=side*.235;sphere(upperBody,'shoulder',.105,[shoulderX,.315,-.025],shirt,[1.02,1,.86]);const arm=new THREE.Group();arm.name=side<0?'left upper arm':'right upper arm';arm.position.set(shoulderX,.285,.025);upperBody.add(arm);capsuleBetween(arm,'upper arm',[-side*.015,0,0],[-side*.055,-.285,0],.067,skin);sphere(arm,'elbow joint',.064,[-side*.055,-.285,0],skin,[1,.96,.95]);capsuleBetween(arm,'forearm',[-side*.055,-.285,0],[-side*.075,-.59,.012],.052,skin);sphere(arm,'wrist',.046,[-side*.075,-.59,.012],skin,[1,.92,.88]);capsuleBetween(arm,'hand palm',[-side*.075,-.59,.012],[-side*.08,-.705,.025],.043,skin);for(let finger=0;finger<4;finger++){const x=-side*.08+(finger-1.5)*.019;capsuleBetween(arm,'finger',[x,-.68,.04],[x-side*.008,-.765,.04],.009,skin);}capsuleBetween(arm,'thumb',[-side*.04,-.635,.045],[-side*.014,-.69,.05],.012,skin);if(side<0){upperArm=arm;patchAttachment=new THREE.Group();patchAttachment.name='configurable upper-arm patch attachment';patchAttachment.position.copy(ARM_ATTACHMENT.position);patchAttachment.rotation.copy(ARM_ATTACHMENT.rotation);arm.add(patchAttachment);}}
+}
+function buildModel(){
+  patchModel=new THREE.Group();patchModel.name=`RX ELEVATE patch · ${PATCH_SIZE.length*100} cm long`;patchModel.userData.dimensions=PATCH_SIZE;
+  const layer=(id,name,z,explodeDirection=0)=>{const group=new THREE.Group();group.name=name;group.userData.basePosition=new THREE.Vector3(0,0,z);group.userData.explodeOffset=new THREE.Vector3(0,0,explodeDirection*.004);group.position.copy(group.userData.basePosition);patchModel.add(group);componentGroups[id]=group;return group;};
+  const adhesive=layer('adhesive','flexible adhesive backing',-.0002,-1);
+  roundedBox(adhesive,'skin-friendly fabric adhesive',PATCH_SIZE.adhesiveLength,PATCH_SIZE.adhesiveWidth,.0008,.009,[0,0,0],mat('#dedbd2',.96,0),'adhesive');
+  roundedBox(adhesive,'soft adhesive cushion',.038,.027,.0007,.008,[0,0,.00065],mat('#f0eee8',.91,0),'adhesive');
+  const battery=layer('battery','rechargeable battery layer',0,-1);
+  roundedBox(battery,'flexible circuit board',.026,.016,.00045,.003,[0,0,0],mat('#185b54',.58,.12),'battery');
+  for(let i=0;i<8;i++){box(battery,'circuit trace',[.006,.00022,.00008],[-.009+(i%4)*.006,-.004+Math.floor(i/4)*.008,.00028],mat('#c48a36',.45,.64),'battery');}
+  roundedBox(battery,'rechargeable cell',.021,.011,.0015,.002,[0,0,.0011],mat('#b8c5c7',.44,.28),'battery');
+  box(battery,'battery label',[.009,.0025,.0001],[0,0,.0019],mats.white,'battery');
+  const sensor=layer('sensor','multi-sensor module',-.0006,0);
+  roundedBox(sensor,'sensor module carrier',.024,.018,.0012,.003,[0,0,.0007],mat('#d8e2e2',.5,.25),'sensor');
+  roundedBox(sensor,'sensor electronics',.017,.011,.001,.002,[0,0,.0017],mat('#164f58',.4,.2),'sensor');
+  for(const x of [-.005,0,.005]){cylinder(sensor,'optical sensor',.0014,.00035,[x,0,.00235],mats.dark,'z','sensor',20);cylinder(sensor,'sensor lens',.00065,.00014,[x,0,.0026],mats.glow,'z','sensor',16);}
+  box(sensor,'motion sensor chip',[.003,.0025,.0008],[0,.004,.0023],mats.silver,'sensor');
+  const cover=layer('cover','rounded protective top cover',.0027,1);
+  roundedBox(cover,'water-resistant top cover',PATCH_SIZE.length,PATCH_SIZE.width,PATCH_SIZE.thickness,.006,[0,0,0],mats.white,'cover');
+  roundedBox(cover,'brand inset',.019,.008,.0002,.002,[.001,-.001,.0031],mat('#f5f8f8',.38,.08),'cover');
+  addLabel(cover,'RX ELEVATE',[-.002,.001,.00325]);addLabel(cover,'SICKLECARE',[-.002,-.004,.00325]);
+  const led=layer('led','status indicator',.0023,1.2);
+  cylinder(led,'power button bezel',.0042,.0012,[-.010,.001,.0024],mats.blue,'z','led',28);cylinder(led,'power button face',.0033,.00055,[-.010,.001,.00285],mat('#5aa4d4',.27,.28),'z','led',28);
+  cylinder(led,'glowing status LED',.00055,.00025,[.014,.007,.00245],mats.glow,'z','led',16);
+  cylinder(led,'secondary indicator',.0004,.0002,[.011,-.008,.00245],mats.glow,'z','led',16);
+  const port=layer('port','charging port',.0005,1);
+  roundedBox(port,'charging port housing',.005,.0017,.0008,.0005,[.014,0,.0024],mats.dark,'port');
+  roundedBox(port,'charging connector opening',.003,.0005,.00012,.00015,[.014,0,.0029],mats.silver,'port');
+  roundedBox(port,'USB connector inset',.0018,.00025,.0001,.00008,[.014,0,.003],mats.dark,'port');
+  for(const group of Object.values(componentGroups))group.traverse(object=>{if(object.isMesh&&object.material)object.material=Array.isArray(object.material)?object.material.map(material=>material.clone()):object.material.clone();});
+  patchAttachment.add(patchModel);
+  selectPart('cover');
+}
+function setup3d(){
+  const wrap=$('vsCanvasWrap');scene=new THREE.Scene();scene.background=new THREE.Color('#eaf1f3');lookAt=new THREE.Vector3(0,0,0);desiredCameraTarget=lookAt.clone();desiredCameraPosition=new THREE.Vector3(.08,.055,.11);desiredCameraUp=new THREE.Vector3(0,1,0);wrap.dataset.patchLengthMetres=String(PATCH_SIZE.length);wrap.dataset.patchWidthMetres=String(PATCH_SIZE.width);wrap.dataset.patchThicknessMetres=String(PATCH_SIZE.thickness);
+  camera=new THREE.PerspectiveCamera(34,1,.0005,12);camera.position.copy(desiredCameraPosition);camera.lookAt(lookAt);
+  renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.14;renderer.domElement.setAttribute('aria-label','Interactive 3D model of the RX ELEVATE SickleCare wearable monitoring patch');renderer.domElement.tabIndex=0;wrap.prepend(renderer.domElement);
+  scene.add(new THREE.HemisphereLight('#ffffff','#b7c8ce',2.0));const key=new THREE.DirectionalLight('#fff8ee',3.3);key.position.set(4,7,5);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.camera.left=-5;key.shadow.camera.right=5;key.shadow.camera.top=6;key.shadow.camera.bottom=-4;scene.add(key);const fill=new THREE.DirectionalLight('#b9e6f0',1.4);fill.position.set(-5,3,1);scene.add(fill);const ground=new THREE.Mesh(new THREE.PlaneGeometry(200,200),mat('#e5edef',.92,0));ground.rotation.x=-Math.PI/2;ground.position.y=-.09;ground.receiveShadow=true;scene.add(ground);
+  buildHuman();buildModel();model=upperBody;raycaster=new THREE.Raycaster();pointer=new THREE.Vector2();resize();new ResizeObserver(resize).observe(wrap);renderer.domElement.addEventListener('pointerdown',pointerDown);renderer.domElement.addEventListener('wheel',wheel,{passive:false});renderer.domElement.addEventListener('contextmenu',event=>event.preventDefault());setupViewerControls();setViewerMode('man');$('vsRenderState').textContent='3D model ready · 1 unit = 1 m';animate();
+}
+function resize(){if(!renderer||!camera)return;const wrap=$('vsCanvasWrap');const width=Math.max(1,wrap.clientWidth),height=Math.max(1,wrap.clientHeight);renderer.setSize(width,height,false);camera.aspect=width/height;camera.updateProjectionMatrix();}
+function animate(){raf=requestAnimationFrame(animate);if(state.autoOrbit){const offset=desiredCameraPosition.clone().sub(desiredCameraTarget);offset.applyAxisAngle(new THREE.Vector3(0,1,0),.003);desiredCameraPosition.copy(desiredCameraTarget).add(offset);}if(camera&&desiredCameraPosition){camera.position.lerp(desiredCameraPosition,.12);lookAt.lerp(desiredCameraTarget,.12);camera.up.lerp(desiredCameraUp,.12);camera.lookAt(lookAt);}for(const part of parts){const group=componentGroups[part.id];if(!group)continue;const selected=state.selected===part.id;group.traverse(object=>{if(object.isMesh&&object.material&&object.material.emissive){object.material.emissive.set(selected?'#144d5c':'#000000');object.material.emissiveIntensity=selected?.2:0;}});group.position.lerp(group.userData.basePosition.clone().add(state.exploded?group.userData.explodeOffset:new THREE.Vector3()),.14);}renderer.render(scene,camera);}
+function highlightModel(id){if(!componentGroups[id])return;state.selected=id;}
+let drag=null;
+function pointerDown(event){if(event.button!==0&&event.button!==2)return;drag={x:event.clientX,y:event.clientY,lastX:event.clientX,lastY:event.clientY,moved:false,pan:event.button===2||event.shiftKey,pointerId:event.pointerId};renderer.domElement.setPointerCapture(event.pointerId);}
+function pointerMove(event){if(!drag)return;const dx=event.clientX-drag.lastX,dy=event.clientY-drag.lastY;drag.lastX=event.clientX;drag.lastY=event.clientY;if(Math.abs(event.clientX-drag.x)+Math.abs(event.clientY-drag.y)>4)drag.moved=true;if(drag.pan){const offset=desiredCameraPosition.clone().sub(desiredCameraTarget);const right=new THREE.Vector3().crossVectors(offset,new THREE.Vector3(0,1,0)).normalize();const scale=offset.length()*.0015;desiredCameraTarget.addScaledVector(right,-dx*scale);desiredCameraTarget.y+=dy*scale;desiredCameraPosition.addScaledVector(right,-dx*scale);desiredCameraPosition.y+=dy*scale;}else{const offset=desiredCameraPosition.clone().sub(desiredCameraTarget);const spherical=new THREE.Spherical().setFromVector3(offset);spherical.theta-=dx*.008;spherical.phi=THREE.MathUtils.clamp(spherical.phi+dy*.008,.12,Math.PI-.12);desiredCameraPosition.copy(desiredCameraTarget).add(new THREE.Vector3().setFromSpherical(spherical));}}
+function pointerUp(event){if(!drag)return;const didMove=drag.moved;drag=null;if(!didMove){const rect=renderer.domElement.getBoundingClientRect();pointer.x=((event.clientX-rect.left)/rect.width)*2-1;pointer.y=-((event.clientY-rect.top)/rect.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObject(viewerMode==='man'?upperBody:patchModel,true);const hit=hits.find(item=>item.object.userData.component);if(hit)selectPart(hit.object.userData.component,true);}}
+function wheel(event){event.preventDefault();zoom(event.deltaY>0?1.08:.92);}
+function zoom(factor){const offset=desiredCameraPosition.clone().sub(desiredCameraTarget);const length=offset.length(),minimum=viewerMode==='device'?.045:.1,maximum=viewerMode==='device'?.45:3.2,next=length*factor;if(next>minimum&&next<maximum){offset.setLength(next);desiredCameraPosition.copy(desiredCameraTarget).add(offset);}}
+function setCamera(position,target,up=new THREE.Vector3(0,1,0)){desiredCameraPosition.copy(position);desiredCameraTarget.copy(target);desiredCameraUp.copy(up);camera.up.copy(up);}
+function patchBounds(){return new THREE.Box3().setFromObject(patchModel);}
+function fitDeviceView(view){const bounds=patchBounds(),center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3()),maxDimension=Math.max(size.x,size.y,size.z),distance=Math.max(.075,(maxDimension*.72)/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))));const directions={front:new THREE.Vector3(0,0,1),back:new THREE.Vector3(0,0,-1),top:new THREE.Vector3(0,1,0),bottom:new THREE.Vector3(0,-1,0),left:new THREE.Vector3(-1,0,0),right:new THREE.Vector3(1,0,0),iso:new THREE.Vector3(1,.72,1).normalize()};const direction=directions[view]||directions.iso;const up=Math.abs(direction.y)>.9?new THREE.Vector3(0,0,direction.y>0?-1:1):new THREE.Vector3(0,1,0);setCamera(center.clone().addScaledVector(direction,distance),center,up);activeView=view;document.querySelectorAll('.vs-camera-presets button[data-camera]').forEach(button=>button.classList.toggle('is-selected',button.dataset.camera===view));}
+function setView(view){if(viewerMode==='man'){if(view==='360'){state.autoOrbit=!state.autoOrbit;$('vsOrbit360').classList.toggle('is-selected',state.autoOrbit);return;}state.autoOrbit=false;$('vsOrbit360').classList.remove('is-selected');if(view==='focus'){const target=new THREE.Vector3();patchAttachment.getWorldPosition(target);setCamera(target.clone().add(new THREE.Vector3(.13,.04,.22)),target);}else{const target=new THREE.Vector3(0,.02,-.05);setCamera(new THREE.Vector3(.48,.08,1.35),target);}document.querySelectorAll('#vsHumanControls [data-camera]').forEach(button=>button.classList.toggle('is-selected',button.dataset.camera===view));return;}if(view==='360'){state.autoOrbit=!state.autoOrbit;$('vsOrbit360').classList.toggle('is-selected',state.autoOrbit);return;}fitDeviceView(view);}
+function resetView(){state.autoOrbit=false;$('vsOrbit360')?.classList.remove('is-selected');if(viewerMode==='device')fitDeviceView('iso');else setView('upper');state.exploded=false;updateExplodeButton();}
+function updateExplodeButton(){$('vsAssemble').textContent=state.exploded?'Assemble':'Exploded view';$('vsAssemble').setAttribute('aria-pressed',String(state.exploded));$('vsAssemble').disabled=viewerMode!=='device';}
+function toggleExplode(){if(viewerMode!=='device')return;state.exploded=!state.exploded;updateExplodeButton();}
+function setViewerMode(mode='man'){viewerMode=mode;state.autoOrbit=false;state.exploded=false;patchModel.parent?.remove(patchModel);if(viewerMode==='man'){upperBody.visible=true;patchAttachment.add(patchModel);patchModel.position.set(0,0,0);model=upperBody;setCamera(new THREE.Vector3(.68,.18,1.85),new THREE.Vector3(0,.02,-.05));}else{upperBody.visible=false;scene.add(patchModel);patchModel.position.set(0,0,0);patchModel.rotation.set(0,0,0);patchModel.scale.set(1,1,1);model=patchModel;fitDeviceView('iso');}const dimensions=patchBounds().getSize(new THREE.Vector3());$('vsCanvasWrap').dataset.geometryLengthMetres=String(dimensions.x);$('vsCanvasWrap').dataset.geometryWidthMetres=String(dimensions.y);$('vsCanvasWrap').dataset.geometryThicknessMetres=String(dimensions.z);$('vsModeMan').classList.toggle('is-selected',viewerMode==='man');$('vsModeDevice').classList.toggle('is-selected',viewerMode==='device');$('vsModeMan').setAttribute('aria-pressed',String(viewerMode==='man'));$('vsModeDevice').setAttribute('aria-pressed',String(viewerMode==='device'));$('vsHumanControls').hidden=viewerMode!=='man';$('vsDeviceControls').hidden=viewerMode!=='device';$('vsAttachmentIndicator').hidden=viewerMode!=='man';$('vsModelCaption').textContent=viewerMode==='man'?'Concept visualization — wearable patch shown at approximate scale.':'Standalone device inspection — approximate dimensions.';updateExplodeButton();}
+function setupViewerControls(){
+  const stagebar=document.querySelector('.vs-stagebar'),tools=document.querySelector('.vs-stage-tools'),switcher=document.createElement('div');switcher.className='vs-mode-switcher';switcher.setAttribute('role','group');switcher.setAttribute('aria-label','3D viewer mode');switcher.innerHTML='<button type="button" id="vsModeMan" aria-pressed="true">Man + Patch</button><button type="button" id="vsModeDevice" aria-pressed="false">Device Only</button>';stagebar.insertBefore(switcher,tools);
+  tools.innerHTML='<button class="vs-tool" type="button" id="vsZoomOut" aria-label="Zoom out" title="Zoom out">−</button><button class="vs-tool" type="button" id="vsZoomIn" aria-label="Zoom in" title="Zoom in">+</button><button class="vs-tool" type="button" id="vsReset" aria-label="Reset view" title="Reset view">Reset</button>';
+  const presets=document.createElement('div');presets.className='vs-camera-presets';presets.innerHTML='<div id="vsHumanControls"><button type="button" data-camera="focus">Focus on Patch</button><button type="button" data-camera="upper" class="is-selected">View Upper Body</button><button type="button" id="vsOrbit360">360° View</button></div><div id="vsDeviceControls" hidden><button type="button" data-camera="front">Front</button><button type="button" data-camera="back">Back</button><button type="button" data-camera="top">Top</button><button type="button" data-camera="bottom">Bottom</button><button type="button" data-camera="left">Left</button><button type="button" data-camera="right">Right</button><button type="button" data-camera="iso" class="is-selected">Isometric</button><button type="button" id="vsAssemble" aria-pressed="false">Exploded view</button></div><span class="vs-size-label">Approx. 3.5 cm · 1 unit = 1 m</span>';
+  stagebar.after(presets);const wrap=$('vsCanvasWrap'),caption=document.createElement('div');caption.className='vs-model-caption';caption.id='vsModelCaption';caption.textContent='Concept visualization — wearable patch shown at approximate scale.';wrap.append(caption);const indicator=document.createElement('div');indicator.className='vs-attachment-indicator';indicator.id='vsAttachmentIndicator';indicator.textContent='Upper-arm attachment · concept';wrap.append(indicator);
+  $('vsModeMan').addEventListener('click',()=>setViewerMode('man'));$('vsModeDevice').addEventListener('click',()=>setViewerMode('device'));$('vsZoomIn').addEventListener('click',()=>zoom(.88));$('vsZoomOut').addEventListener('click',()=>zoom(1.14));$('vsReset').addEventListener('click',resetView);$('vsAssemble').addEventListener('click',toggleExplode);$('vsOrbit360').addEventListener('click',()=>setView('360'));presets.addEventListener('click',event=>{const button=event.target.closest('[data-camera]');if(button)setView(button.dataset.camera);});
+}
+function setDisplayMode(mode){activeScreenMode=mode;drawScreen(mode);}
+
+function localDateString(date=new Date()){const year=date.getFullYear(),month=String(date.getMonth()+1).padStart(2,'0'),day=String(date.getDate()).padStart(2,'0');return `${year}-${month}-${day}`;}
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
+function formatMeasurementTime(value){const date=new Date(value);return Number.isNaN(date.getTime())?'Invalid date':date.toLocaleString();}
+function setRecordNotice(text,visible=true){$('vsRecordNotice').textContent=text;$('vsRecordNotice').classList.toggle('is-visible',visible);}
+function updatePatientOptions(){
+  const select=$('vsPatientFilter'),selected=select.value,ids=[...new Set(allRecords.map(record=>record.patientId))].sort((a,b)=>a.localeCompare(b));
+  select.innerHTML='<option value="">Select patient ID</option>'+ids.map(id=>`<option value="${escapeHtml(id)}">${escapeHtml(id)}</option>`).join('');
+  if(ids.includes(selected))select.value=selected;
+  else if(ids.includes($('vsIdentity').value.trim()))select.value=$('vsIdentity').value.trim();
+  else if(ids.length===1)select.value=ids[0];
+}
+function visibleRecords(patientId=$('vsPatientFilter').value){
+  const from=$('vsDateFrom').value,to=$('vsDateTo').value;
+  return allRecords.filter(record=>record.patientId===patientId&&(!from||localDayKey(record.measuredAt)>=from)&&(!to||localDayKey(record.measuredAt)<=to)).sort((a,b)=>new Date(b.measuredAt)-new Date(a.measuredAt));
+}
+function metricLine(label,value,unit){return `<div class="vs-card-metric"><span>${label}</span><strong>${value}${unit?` ${unit}`:''}</strong></div>`;}
+function renderHealthAnalysis(patientId){
+  const content=$('vsAnalysisContent');
+  if(!patientId){content.innerHTML='<p>Select a patient ID and start monitoring to analyze that patient’s saved readings.</p>';$('vsAnalysisProvider').textContent='No patient selected';$('vsAnalysisTimestamp').textContent='Not analyzed yet';$('vsExportAnalysis').disabled=true;latestAnalysis=null;return;}
+  const analysis=analyzePatientHistory(allRecords,patientId,$('vsDateFrom').value,$('vsDateTo').value);
+  latestAnalysis=analysis;$('vsAnalysisProvider').textContent=analysis.provider;$('vsAnalysisTimestamp').textContent=`Analyzed ${new Date(analysis.analyzedAt).toLocaleString()} · ${analysis.recordCount} patient-specific record(s)`;$('vsExportAnalysis').disabled=!analysis.latest;
+  const concernContent=analysis.concerns.length?analysis.concerns.map(flag=>`<div class="vs-flag ${flag.level==='urgent'?'urgent':''}"><b>${flag.level==='urgent'?'Prompt assessment':'Professional review'} · ${escapeHtml(flag.metric)} (${escapeHtml(flag.value)}):</b> ${escapeHtml(flag.reason)}</div>`).join(''):'<p>No configured rule flags for the latest entry. This does not guarantee safety or rule out illness.</p>';
+  const qualityContent=analysis.dataQuality.length?`<ul>${analysis.dataQuality.map(warning=>`<li>${escapeHtml(warning)}</li>`).join('')}</ul>`:'<p>Required vital values are present in the saved records. Source remains user-reported and is not sensor-verified.</p>';
+  content.innerHTML=`<div class="vs-analysis-summary">${escapeHtml(analysis.latestSummary)}</div><div class="vs-analysis-section"><strong>Observed changes</strong>${escapeHtml(analysis.observedChanges)}</div><div class="vs-analysis-section"><strong>Historical trend · same patient · ${analysis.recordCount} record(s)</strong>${escapeHtml(analysis.historicalTrend)}</div><div class="vs-analysis-section"><strong>Potential concerns requiring professional review</strong>${concernContent}</div><div class="vs-analysis-section"><strong>Data quality</strong>${qualityContent}</div><div class="vs-analysis-section"><strong>Suggested next step</strong>${escapeHtml(analysis.nextStep)}</div><p class="vs-empty">${escapeHtml(analysis.disclaimer)}</p>`;
+}
+function summaryRange(records,start,end,title){
+  const summary=summarizeRecords(records,start,end),distinctDays=new Set(summary.records.map(record=>localDayKey(record.measuredAt))).size;
+  if(!summary.measurementCount)return `<p>No saved measurements in this ${title.toLowerCase()} window.</p>`;
+  const countNote=`${summary.measurementCount} measurement${summary.measurementCount===1?'':'s'} across ${distinctDays} day${distinctDays===1?'':'s'}.`;
+  if(distinctDays<2)return `<p>${countNote} Not enough historical data to determine a trend.</p>`;
+  const metrics=[['Pulse','pulse','bpm'],['SpO₂','spo2','%'],['Temperature','temperature','°C'],['Systolic','systolic','mmHg']];
+  return `<p>${countNote} Observed values only; no cause or diagnosis is inferred.</p>`+metrics.map(([label,key,unit])=>{const stat=summary.statistics[key];return stat?metricLine(label,`${stat.minimum===stat.maximum?stat.minimum:stat.minimum+'–'+stat.maximum} · mean ${stat.average.toFixed(key==='temperature'?1:0)}`,unit):''}).join('');
+}
+function drawMetricChart(records,key,label,unit,color){
+  const points=[...records].sort((a,b)=>new Date(a.measuredAt)-new Date(b.measuredAt)).filter(record=>Number.isFinite(Number(record[key])));
+  const days=new Set(points.map(record=>localDayKey(record.measuredAt)));
+  if(points.length<2)return `<p class="vs-empty">${label}: at least two saved readings are needed for a trend.</p>`;
+  const width=500,height=128,pad={left:38,right:12,top:12,bottom:28},values=points.map(record=>Number(record[key])),min=Math.min(...values),max=Math.max(...values),span=max-min||1;
+  const x=index=>pad.left+index*(width-pad.left-pad.right)/Math.max(1,points.length-1),y=value=>height-pad.bottom-(value-min)/span*(height-pad.top-pad.bottom);
+  const polyline=points.map((record,index)=>`${x(index).toFixed(1)},${y(Number(record[key])).toFixed(1)}`).join(' ');
+  const dots=points.map((record,index)=>`<circle cx="${x(index).toFixed(1)}" cy="${y(Number(record[key])).toFixed(1)}" r="3.2" fill="${color}"><title>${escapeHtml(formatMeasurementTime(record.measuredAt))}: ${Number(record[key])} ${unit}</title></circle>`).join('');
+  const sameDay=days.size===1,formatLabel=record=>sameDay?new Date(record.measuredAt).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):localDayKey(record.measuredAt),first=escapeHtml(formatLabel(points[0])),last=escapeHtml(formatLabel(points.at(-1)));
+  return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${label} history chart; ${points.length} actual measurements across ${days.size} days"><line x1="${pad.left}" x2="${width-pad.right}" y1="${height-pad.bottom}" y2="${height-pad.bottom}" stroke="#dbe5e9"/><polyline points="${polyline}" fill="none" stroke="${color}" stroke-width="2"/>${dots}<text x="${pad.left}" y="${height-8}" font-size="9" fill="#627582">${first}</text><text x="${width-pad.right}" y="${height-8}" text-anchor="end" font-size="9" fill="#627582">${last}</text><text x="${pad.left}" y="10" font-size="9" fill="#627582">${max} ${unit}</text></svg>`;
+}
+function renderMeasurementHistory(){
+  updatePatientOptions();
+  const patientId=$('vsPatientFilter').value,records=visibleRecords(patientId),latest=records[0]||null,previous=records[1]||null;
+  $('vsWebsiteResults').hidden=!latest;
+  $('vsHistoryCount').textContent=`${records.length} record${records.length===1?'':'s'}`;
+  if(!patientId){renderHealthAnalysis('');['vsLatestRecord','vsPreviousRecord','vsDailySummary','vsChangeSummary','vsWeeklyTrend','vsMonthlyTrend','vsDataQuality'].forEach(id=>$(id).innerHTML='<p>Select a patient ID to view their local records.</p>');$('vsHistoryRows').innerHTML='<tr><td colspan="5">Select a patient ID to view records.</td></tr>';$('vsHistoryCharts').innerHTML='<p class="vs-empty">Select a patient ID to plot records.</p>';return;}
+  if(latest){
+    const flags=readingFlags(latest),summary=summarizeRecords(records,$('vsDateFrom').value,$('vsDateTo').value);
+    $('vsLatestRecord').innerHTML=`<p>${escapeHtml(formatMeasurementTime(latest.measuredAt))}</p>${metricLine('Blood pressure',`${latest.systolic}/${latest.diastolic}`,'mmHg')}${metricLine('Pulse',latest.pulse,'bpm')}${metricLine('SpO₂',latest.spo2,'%')}${metricLine('Temperature',Number(latest.temperature).toFixed(1),'°C')}${latest.pain===null||latest.pain===''?'':metricLine('Pain score',latest.pain,'/10')}${metricLine('Source',escapeHtml(latest.sourceLabel))}${flags.map(flag=>`<div class="vs-flag ${flag.level==='urgent'?'urgent':''}"><b>${flag.level==='urgent'?'Prompt assessment':'Review'} · ${escapeHtml(flag.metric)}:</b> ${escapeHtml(flag.reason)}</div>`).join('')||'<div class="vs-flag">No configured prompt was triggered. This is not reassurance or a diagnosis.</div>'}`;
+    $('vsDailySummary').innerHTML=`<p>Latest recorded local day: <b>${escapeHtml(localDayKey(latest.measuredAt))}</b>. ${summary.records.filter(record=>localDayKey(record.measuredAt)===localDayKey(latest.measuredAt)).length} measurement(s).</p>${latest.symptoms?metricLine('Symptoms',escapeHtml(latest.symptoms),''):''}${latest.pain===null||latest.pain===''?'':metricLine('Patient-reported pain',latest.pain,'/10')}${latest.notes?metricLine('Notes',escapeHtml(latest.notes),''):''}`;
+  }else{$('vsLatestRecord').innerHTML='<p>No measurements in this selected date range.</p>';$('vsDailySummary').innerHTML='<p>Missing measurement data is not represented as zero.</p>';}
+  if(previous&&latest){$('vsPreviousRecord').innerHTML=`<p>${escapeHtml(formatMeasurementTime(previous.measuredAt))}</p>${metricLine('Blood pressure',`${previous.systolic}/${previous.diastolic}`,'mmHg')}${metricLine('Pulse',previous.pulse,'bpm')}${metricLine('SpO₂',previous.spo2,'%')}${metricLine('Temperature',Number(previous.temperature).toFixed(1),'°C')}`}else $('vsPreviousRecord').innerHTML='<p>A second measurement is needed for comparison.</p>';
+  const metricNames=[['Systolic','systolic','mmHg'],['Diastolic','diastolic','mmHg'],['Pulse','pulse','bpm'],['SpO₂','spo2','%'],['Temperature','temperature','°C']];
+  $('vsChangeSummary').innerHTML=previous&&latest?metricNames.map(([label,key,unit])=>{const change=metricChange(previous,latest,key);if(!change)return '';const delta=change.difference>0?'+':'';return metricLine(label,`${delta}${change.difference.toFixed(key==='temperature'?1:0)} ${unit}${change.percent===null?'':` (${change.percent>0?'+':''}${change.percent.toFixed(1)}%)`}`,'');}).join('')+'<p>Change is descriptive and does not establish clinical improvement or deterioration.</p>':'<p>A second reading in the selected date range is needed to calculate change.</p>';
+  const end=$('vsDateTo').value||localDateString(),endDate=new Date(`${end}T12:00:00`),weekStart=new Date(endDate),monthStart=new Date(endDate);weekStart.setDate(weekStart.getDate()-6);monthStart.setDate(monthStart.getDate()-29);
+  $('vsWeeklyTrend').innerHTML=summaryRange(allRecords.filter(record=>record.patientId===patientId),localDateString(weekStart),end,'Seven-day');
+  $('vsMonthlyTrend').innerHTML=summaryRange(allRecords.filter(record=>record.patientId===patientId),localDateString(monthStart),end,'Thirty-day');
+  const expectedDays=summarizeRecords(allRecords.filter(record=>record.patientId===patientId),localDateString(weekStart),end).days,recordDays=new Set(expectedDays.filter(day=>day.records.length).map(day=>day.date));
+  $('vsDataQuality').innerHTML=`${metricLine('Measurements in range',records.length,'')}${metricLine('Days with records',recordDays.size,`of ${expectedDays.length}`)}${metricLine('Days without a record',Math.max(0,expectedDays.length-recordDays.size),'')}${metricLine('Most recent record',latest?escapeHtml(formatMeasurementTime(latest.measuredAt)):'None','')}<p>Missing days indicate no saved record in this browser, not that a measurement was zero or that a device failed.</p>`;
+  $('vsHistoryRows').innerHTML=records.length?records.map(record=>`<tr><td>${escapeHtml(formatMeasurementTime(record.measuredAt))}</td><td>BP ${record.systolic}/${record.diastolic} mmHg<br>Pulse ${record.pulse} bpm · SpO₂ ${record.spo2}%<br>Temp ${Number(record.temperature).toFixed(1)} °C${record.pain===null||record.pain===''?'':` · Pain ${record.pain}/10`}</td><td>${escapeHtml(record.symptoms||'Not entered')}${record.notes?`<br><span>${escapeHtml(record.notes)}</span>`:''}</td><td><span class="vs-source-badge">${escapeHtml(record.sourceLabel)}</span><br><small>Entered by user</small></td><td><div class="vs-row-actions"><button type="button" data-edit-record="${escapeHtml(record.id)}">Edit</button><button type="button" data-delete-record="${escapeHtml(record.id)}">Delete</button></div></td></tr>`).join(''):'<tr><td colspan="5">No records for this patient and date range.</td></tr>';
+  const chartRecords=records;
+  $('vsHistoryCharts').innerHTML=chartRecords.length?drawMetricChart(chartRecords,'systolic','Systolic BP','mmHg','#176b91')+drawMetricChart(chartRecords,'diastolic','Diastolic BP','mmHg','#138c86')+drawMetricChart(chartRecords,'pulse','Pulse','bpm','#bd8340')+drawMetricChart(chartRecords,'spo2','SpO₂','%','#8b6ca5')+drawMetricChart(chartRecords,'temperature','Temperature','°C','#bd5960'):'<p class="vs-empty">No records in the selected date range.</p>';
+  renderHealthAnalysis(patientId);
+  if(state.linked)publishStationValues();
+}
+async function reloadMeasurements(){try{allRecords=await listAllMeasurements();renderMeasurementHistory();}catch(error){setRecordNotice('Could not access browser-local measurement storage. No record has been saved.',true);console.error(error);}}
+function populateRecordForm(record){editingRecordId=record.id;$('vsIdentity').value=record.patientId;$('vsMeasuredAt').value=localDateTimeValue(new Date(record.measuredAt));$('vsAge').value=record.age??'';$('vsSex').value=record.sex||'';$('vsSource').value=record.source||'manual';$('vsSystolic').value=record.systolic;$('vsDiastolic').value=record.diastolic;$('vsPulse').value=record.pulse;$('vsSpo2').value=record.spo2;$('vsTemp').value=record.temperature;$('vsPain').value=record.pain??'';$('vsSymptoms').value=record.symptoms||'';$('vsNotes').value=record.notes||'';$('vsConfirm').checked=true;$('vsStart').textContent='Update measurement';$('vsSaveState').textContent=`Editing record from ${formatMeasurementTime(record.measuredAt)}.`;window.scrollTo({top:$('vsForm').getBoundingClientRect().top+scrollY-80,behavior:'smooth'});}
+function resetMeasurementEditor(){editingRecordId=null;$('vsForm').reset();$('vsMeasuredAt').value=localDateTimeValue();$('vsStart').textContent='Save measurement';$('vsConfirm').checked=true;clearErrors();$('vsSaveState').textContent='';}
+async function saveCurrentMeasurement(){const data=validate();if(!data)return;const sourceLabels={manual:'Manual entry · externally measured',external:'External device · transcribed by user'},previousRecord=editingRecordId?allRecords.find(item=>item.id===editingRecordId):null;const record={...data,...(previousRecord?{age:previousRecord.age??null,sex:previousRecord.sex||'',pain:previousRecord.pain??null,notes:previousRecord.notes||'',source:previousRecord.source||data.source,sourceLabel:previousRecord.sourceLabel||sourceLabels[previousRecord.source]||'User-entered source'}:{}),id:editingRecordId||undefined,sourceLabel:previousRecord?.sourceLabel||sourceLabels[data.source]||'User-entered source'};
+  $('vsStart').disabled=true;$('vsSaveState').textContent='Saving in this browser…';
+  try{const saved=await saveMeasurement(record);editingRecordId=null;monitoringStarted=true;state.data={...saved,identity:saved.patientId,created:new Date(saved.measuredAt)};$('vsPatientFilter').value=saved.patientId;const existing=$('vsPatientFilter').querySelector(`option[value="${CSS.escape(saved.patientId)}"]`);if(!existing){const option=document.createElement('option');option.value=saved.patientId;option.textContent=saved.patientId;$('vsPatientFilter').appendChild(option);}$('vsPatientFilter').value=saved.patientId;$('vsDateFrom').value='';$('vsDateTo').value='';$('vsStart').textContent='Start Monitoring';$('vsConfirm').checked=true;$('vsReportRecord').disabled=false;$('vsWebsiteResults').hidden=false;$('vsSaveState').textContent=record.id?'Measurement updated; dashboard re-analyzed.':'Measurement saved; dashboard updated.';$('vsStatusText').textContent='Monitoring dashboard active · recorded values';setRecordNotice(`Saved ${formatMeasurementTime(saved.measuredAt)} for patient ${saved.patientId}. Results and analysis below use this patient’s saved records only.`,true);$('vsHistory').classList.add('vs-dashboard-active');await reloadMeasurements();drawScreen('summary');$('vsAnalysisCard').scrollIntoView({block:'start',behavior:'smooth'});
+  }catch(error){$('vsSaveState').textContent='Save failed. Check browser local storage permissions and retry.';setRecordNotice('The measurement was not saved. Browser-local storage is unavailable.',true);console.error(error);}finally{$('vsStart').disabled=false;}
+}
+async function editSavedRecord(id){const record=allRecords.find(item=>item.id===id);if(record)populateRecordForm(record);}
+async function deleteSavedRecord(id){const record=allRecords.find(item=>item.id===id);if(!record||!confirm(`Delete the measurement for ${record.patientId} from ${formatMeasurementTime(record.measuredAt)}? This cannot be undone.`))return;await deleteMeasurement(id);if(editingRecordId===id)resetMeasurementEditor();await reloadMeasurements();publishStationValues();setRecordNotice('Measurement deleted; dashboard analysis was refreshed.',true);}
+function exportLatestReport(){const analysis=latestAnalysis;if(!analysis?.latest){setRecordNotice('Save a measurement for the selected patient before exporting.',true);return;}const record=analysis.latest,lines=['RX ELEVATE · INLINE MONITORING EXPORT','Informational decision support only · not a diagnosis','',`Patient ID: ${record.patientId}`,`Measured: ${formatMeasurementTime(record.measuredAt)}`,`Source: ${record.sourceLabel||'User-entered'}`,'',`Blood pressure: ${record.systolic}/${record.diastolic} mmHg`,`Pulse: ${record.pulse} bpm`,`SpO2: ${record.spo2}%`,`Temperature: ${Number(record.temperature).toFixed(1)} C`,record.pain===null||record.pain===''?'Pain score: not entered':`Pain score: ${record.pain}/10`,`Symptoms: ${record.symptoms||'not entered'}`,`Notes: ${record.notes||'not entered'}`,'',`Analysis provider: ${analysis.provider}`,`Analysis time: ${new Date(analysis.analyzedAt).toLocaleString()}`,`Latest summary: ${analysis.latestSummary}`,`Observed changes: ${analysis.observedChanges}`,`Historical trend: ${analysis.historicalTrend}`,'Potential concerns:',...(analysis.concerns.length?analysis.concerns.map(flag=>`- ${flag.level}: ${flag.metric} ${flag.value}. ${flag.reason}`):['- No configured prompt triggered; this does not guarantee safety.']),'Data quality:',...(analysis.dataQuality.length?analysis.dataQuality.map(item=>`- ${item}`):['- No additional quality warning.']),`Next step: ${analysis.nextStep}`,analysis.disclaimer].join('\n');const url=URL.createObjectURL(new Blob([lines],{type:'text/plain;charset=utf-8'})),link=document.createElement('a');link.href=url;link.download=`RX-ELEVATE-${record.patientId}-${localDayKey(record.measuredAt)}-analysis.txt`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function setDateDefaults(){const today=new Date(),from=new Date(today);from.setDate(from.getDate()-29);$('vsDateTo').value=localDateString(today);$('vsDateFrom').value=localDateString(from);}
+
+function renderInterpretation(data){const flags=interpretMeasurements(data),r=referenceRanges;if(!flags.length)return `<div class="vs-report-callout"><b>No rule-based flag was triggered by the entered values.</b> This does not establish that the values are normal or rule out illness. The illustrative adult references are BP ${r.systolic[0]}–${r.systolic[1]}/${r.diastolic[0]}–${r.diastolic[1]} mmHg, pulse ${r.pulse[0]}–${r.pulse[1]} bpm, SpO₂ ${r.spo2[0]}–${r.spo2[1]}%, temperature ${r.temperature[0]}–${r.temperature[1]} °C. Context and clinician review matter.</div>`;
+  return flags.map(flag=>`<div class="vs-report-callout" style="border-left-color:${flag.level==='urgent'?'#ad3d45':'#c38b28'}"><b>${flag.level==='urgent'?'Prompt assessment note':'Review note'}</b><br>${esc(flag.text)}</div>`).join('')+`<p style="font-size:9px;color:#627582">Illustrative adult references: BP ${r.systolic[0]}–${r.systolic[1]}/${r.diastolic[0]}–${r.diastolic[1]} mmHg; pulse ${r.pulse[0]}–${r.pulse[1]} bpm; SpO₂ ${r.spo2[0]}–${r.spo2[1]}%; temperature ${r.temperature[0]}–${r.temperature[1]} °C. These are configurable informational ranges, not diagnostic criteria.</p>`;
+}
+function makeReport(){const d=state.data,when=d.created.toLocaleString();const identity=d.identity?esc(d.identity):'Not provided';const optional=(label,value)=>`<div class="vs-report-row"><span>${label}</span><b>${value?esc(value):'Not provided'}</b></div>`;
+  $('vsReportSheet').innerHTML=`<div class="vs-report-top"><div><div class="vs-eyebrow">RX ELEVATE · SIMULATION OUTPUT</div><h2>Rural Telehealth Vital Station<br>Simulated Health Report</h2><div style="font-size:10px;color:#627582">Manually entered values · For clinician review</div></div><div class="vs-report-meta"><strong>RX ELEVATE</strong><br>Generated ${esc(when)}<br>Prototype demonstration</div></div><section class="vs-report-section"><h3>Patient and recording details</h3><div class="vs-report-grid">${optional('Patient name / ID',d.identity)}${optional('Age',d.age===null?'':`${d.age} years`)}${optional('Sex',d.sex)}${optional('Entry method','Manual user entry')}</div></section><section class="vs-report-section"><h3>Recorded vital parameters</h3><div class="vs-report-grid"><div class="vs-report-row"><span>Blood pressure</span><b>${d.systolic} / ${d.diastolic} mmHg</b></div><div class="vs-report-row"><span>Pulse rate</span><b>${d.pulse} bpm</b></div><div class="vs-report-row"><span>SpO₂</span><b>${d.spo2}%</b></div><div class="vs-report-row"><span>Body temperature</span><b>${d.temperature.toFixed(1)} °C</b></div></div></section><section class="vs-report-section"><h3>Patient-reported information</h3>${optional('Symptoms',d.symptoms)}${optional('Notes',d.notes)}</section><section class="vs-report-section"><h3>Transparent informational summary</h3><p style="font-size:10px;color:#627582">The report records the values as entered: BP ${d.systolic}/${d.diastolic} mmHg, pulse ${d.pulse} bpm, SpO₂ ${d.spo2}%, and temperature ${d.temperature.toFixed(1)} °C. This software does not diagnose or determine whether a person is well.</p>${renderInterpretation(d)}</section><section class="vs-report-section"><h3>Clinician review and comments</h3><p style="font-size:10px;color:#627582;margin-bottom:8px">To be completed by a qualified clinician. Verify values and measurement method; consider the person’s age, symptoms, clinical context, and repeat measurements as appropriate.</p><div class="vs-clinician-lines" aria-label="Blank area for clinician comments"></div></section><section class="vs-report-section"><h3>Measurement source</h3><p style="font-size:10px;color:#627582">All values in this report were manually entered into a software demonstration by the user. The 3D kiosk is not connected to sensors. No patient data was transmitted by this page.</p></section><div class="vs-report-disclaimer"><b>Prototype disclaimer:</b> This is a software demonstration, not a medical device, medical record, or diagnosis. It does not replace professional assessment or emergency care. Do not delay care or change treatment based on this report. Readings without a flag do not rule out illness.</div>`;
+}
+function showReport(){state.report=true;state.phase=2;clearTimeout(state.timer);$('vsSimulatorView').classList.add('vs-report-hidden');$('vsHistory').classList.add('vs-report-hidden');$('vsReportView').classList.add('is-visible');$('vsIntro').classList.add('vs-report-hidden');document.querySelector('.vs-crumb').classList.add('vs-report-hidden');document.querySelector('.vs-interpret').classList.add('vs-report-hidden');document.querySelector('.vs-footer').classList.add('vs-report-hidden');makeReport();drawScreen('report');history.replaceState(null,'','#report');window.scrollTo({top:0,behavior:'smooth'});}
+function hideReport(){state.report=false;$('vsSimulatorView').classList.remove('vs-report-hidden');$('vsHistory').classList.remove('vs-report-hidden');$('vsReportView').classList.remove('is-visible');$('vsIntro').classList.remove('vs-report-hidden');document.querySelector('.vs-crumb').classList.remove('vs-report-hidden');document.querySelector('.vs-interpret').classList.remove('vs-report-hidden');document.querySelector('.vs-footer').classList.remove('vs-report-hidden');history.replaceState(null,'','#simulator');window.scrollTo({top:0,behavior:'smooth'});}
+
+const flow=[{id:'led',mode:'welcome',title:'Patch status indicator activates'},{id:'sensor',mode:'bp',title:'Manually entered blood pressure displayed'},{id:'sensor',mode:'pulse',title:'Manually entered pulse and SpO₂ displayed'},{id:'sensor',mode:'temp',title:'Manually entered temperature displayed'},{id:'cover',mode:'summary',title:'Companion app summary updates'}];
+function updateFlow(){const done=Math.min(state.step,flow.length);$('vsFlowBar').style.width=`${Math.min(state.step/flow.length*100,100)}%`;$('vsFlowCount').textContent=`Step ${Math.min(state.step+1,flow.length)} of ${flow.length}`;$('vsFlowTitle').textContent=state.step>=flow.length?'Simulation complete':flow[state.step].title;document.querySelectorAll('[data-flow-step]').forEach((element,index)=>{element.classList.toggle('is-current',index===Math.min(state.step,flow.length-1));element.classList.toggle('is-done',index<state.step);});}
+function runFlow(){state.phase=1;state.step=0;$('vsWorkflow').classList.add('is-visible');$('vsPreviewFlow').disabled=true;$('vsStatusText').textContent='Walkthrough · saved values only';$('vsGenerate').hidden=true;updateFlow();selectPart(flow[0].id);setDisplayMode(flow[0].mode);$('vsFlowSteps').scrollIntoView({block:'nearest',behavior:'smooth'});
+  const advance=()=>{if(state.phase!==1)return;if(state.step>=flow.length){state.phase=2;$('vsFlowTitle').textContent='Simulation complete';$('vsFlowCount').textContent='All steps complete';$('vsFlowBar').style.width='100%';document.querySelectorAll('[data-flow-step]').forEach(el=>{el.classList.remove('is-current');el.classList.add('is-done');});$('vsGenerate').hidden=false;$('vsPreviewFlow').disabled=false;$('vsStatusText').textContent='Walkthrough complete · values are user-entered';return;}const step=flow[state.step];selectPart(step.id);setDisplayMode(step.mode);updateFlow();state.step++;state.timer=setTimeout(advance,1100);};
+  state.timer=setTimeout(advance,1100);
+}
+function cancelFlow(){clearTimeout(state.timer);state.phase=0;state.step=0;$('vsWorkflow').classList.remove('is-visible');$('vsPreviewFlow').disabled=false;$('vsStatusText').textContent='Demo ready · no sensors connected';$('vsGenerate').hidden=true;setDisplayMode('idle');selectPart('cover');}
+function startNew(){hideReport();state.data=null;cancelFlow();$('vsForm').reset();clearErrors();publishStationValues();setDisplayMode('idle');}
+
+$('vsForm').addEventListener('submit',event=>{event.preventDefault();saveCurrentMeasurement();});
+$('vsPreviewFlow').addEventListener('click',()=>{if(!state.data){setRecordNotice('Save a measurement first. The walkthrough uses only a saved entry.',true);return;}runFlow();});
+$('vsReportRecord').addEventListener('click',exportLatestReport);$('vsExportAnalysis').addEventListener('click',exportLatestReport);
+$('vsPatientFilter').addEventListener('change',()=>{const id=$('vsPatientFilter').value;if(id)$('vsIdentity').value=id;renderMeasurementHistory();});
+$('vsApplyFilters').addEventListener('click',()=>{if($('vsDateFrom').value&&$('vsDateTo').value&&$('vsDateFrom').value>$('vsDateTo').value){setRecordNotice('Start date must be on or before end date.',true);return;}renderMeasurementHistory();});
+$('vsDateFrom').addEventListener('change',()=>{if(!$('vsDateTo').value||$('vsDateFrom').value<=$('vsDateTo').value)renderMeasurementHistory();});$('vsDateTo').addEventListener('change',()=>{if(!$('vsDateFrom').value||$('vsDateFrom').value<=$('vsDateTo').value)renderMeasurementHistory();});
+$('vsHistoryRows').addEventListener('click',event=>{const edit=event.target.closest('[data-edit-record]'),remove=event.target.closest('[data-delete-record]');if(edit)editSavedRecord(edit.dataset.editRecord);if(remove)deleteSavedRecord(remove.dataset.deleteRecord);});
+$('vsCancel').addEventListener('click',cancelFlow);$('vsGenerate').addEventListener('click',exportLatestReport);$('vsReturn').addEventListener('click',hideReport);$('vsNew').addEventListener('click',startNew);$('vsPrint').addEventListener('click',()=>window.print());
+document.querySelectorAll('.vs-part').forEach(button=>button.addEventListener('click',()=>selectPart(button.dataset.part)));
+$('vsCanvasWrap').addEventListener('pointermove',pointerMove);$('vsCanvasWrap').addEventListener('pointerup',pointerUp);$('vsCanvasWrap').addEventListener('pointercancel',()=>drag=null);
+
+try{setup3d();}catch(error){console.error(error);$('vsRenderState').textContent='3D view unavailable';const fallback=document.createElement('div');fallback.style.cssText='position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;color:#526b77;font-size:13px';fallback.innerHTML='<div><strong>Unable to load the interactive 3D view.</strong><br>Check the network connection and reload to load the Three.js module.</div>';$('vsCanvasWrap').append(fallback);}
+setDateDefaults();
+reloadMeasurements();
+</script>
+</body>
+</html>

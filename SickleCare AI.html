@@ -1,0 +1,283 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>SickleCare AI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbf7f5;--sf:#fff;--ink:#241619;--mu:#6d5b5e;--ln:#eadfdc;--ac:#b3263e;--ac2:#fde8eb;--ok:#1f7a55;--okb:#e2f5ec;--wn:#a66300;--wnb:#fff1d6;--ur:#b3263e;--urb:#fde8eb}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171012;--sf:#241a1d;--ink:#f6ecee;--mu:#b5a3a6;--ln:#3a2c30;--ac:#ff6b83;--ac2:#3d1d25;--ok:#59d49b;--okb:#17352a;--wn:#f2b34f;--wnb:#3b2c10;--ur:#ff7c8f;--urb:#432029;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171012;--sf:#241a1d;--ink:#f6ecee;--mu:#b5a3a6;--ln:#3a2c30;--ac:#ff6b83;--ac2:#3d1d25;--ok:#59d49b;--okb:#17352a;--wn:#f2b34f;--wnb:#3b2c10;--ur:#ff7c8f;--urb:#432029;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.2;margin:0}h3{font-size:18px;margin-bottom:6px}
+.w{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--ln)}
+nav .w{display:flex;align-items:center;justify-content:space-between;height:58px}
+nav a{color:var(--ink);text-decoration:none;margin-left:18px;font-size:15px;font-weight:600}nav a.on{color:var(--ac)}nav .logo{margin:0;font:700 20px Fraunces,Georgia,serif;color:var(--ac)}
+.pg{display:none}.pg.on{display:block}
+.hero{padding:56px 0 30px;background:linear-gradient(180deg,var(--ac2),var(--bg))}.hero h1{font-size:clamp(34px,6vw,54px);margin:14px 0;max-width:720px}.hero p{color:var(--mu);font-size:18px;max-width:600px}
+.tag{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--ac);background:var(--ac2);padding:5px 12px;border-radius:99px}
+.btn{display:inline-block;background:var(--ac);color:#fff;border:0;border-radius:10px;padding:12px 18px;min-height:44px;font:600 15px Inter,sans-serif;cursor:pointer;text-decoration:none}.btn.g{background:var(--ac2);color:var(--ac)}.btn:disabled{opacity:.5}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:18px;margin-bottom:14px}.g2 .card{margin:0}.card p{margin:0 0 8px;color:var(--mu);font-size:14.5px}
+.role{padding:24px}.role h2{font-size:26px;margin-bottom:8px}.role p{margin-bottom:16px}
+section{padding:34px 0}section h2.s{font-size:28px;margin-bottom:14px}
+.arch{display:flex;flex-wrap:wrap;gap:8px}.arch span{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:8px 13px;font-size:14px;font-weight:600}
+ul{padding-left:20px;margin:6px 0;color:var(--mu);font-size:15px}.yes li::marker{color:var(--ok)}.no li::marker{color:var(--ur)}
+.warn{background:var(--urb);color:var(--ur);border-radius:14px;padding:16px 18px;font-weight:500}
+.top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;padding:28px 0 4px}.top h1{font-size:30px}
+details{font-size:14px;color:var(--mu)}details select{font:14px Inter;padding:6px;border-radius:8px;border:1px solid var(--ln);background:var(--sf);color:var(--ink);margin:4px 6px 0 0}
+.tabs2{display:flex;gap:8px;overflow-x:auto;margin:14px 0;padding-bottom:4px}
+.tb{flex:0 0 auto;padding:10px 16px;min-height:42px;border-radius:99px;border:1px solid var(--ln);background:var(--sf);font:600 14px Inter;cursor:pointer;color:var(--ink)}.tb.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.tp{display:none}.tp.on{display:block}
+.hero2{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:18px;margin-bottom:12px}.hero2 h2{font-size:32px}.hero2 small{color:var(--mu)}
+.bd{font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;white-space:nowrap}.bd.ok{background:var(--okb);color:var(--ok)}.bd.review{background:var(--wnb);color:var(--wn)}.bd.urgent{background:var(--urb);color:var(--ur)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.tile{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:12px}.tile small{color:var(--mu);font-size:13px}.tile b{display:block;font-size:28px}.tile b i{font:400 13px Inter;color:var(--mu)}.tile svg{width:100%;height:30px;display:block}
+.al{margin:10px 0;padding:12px 14px;border-radius:12px;font-size:15px}.al.ok{background:var(--okb);color:var(--ok)}.al.review{background:var(--wnb);color:var(--wn)}.al.urgent{background:var(--urb);color:var(--ur);font-weight:600}.al.info{background:var(--ac2);color:var(--ink)}
+.tiny{font-size:13px;color:var(--mu)}
+label.ck{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ln);border-radius:99px;padding:7px 13px;margin:3px 3px 3px 0;font-size:14px;cursor:pointer;background:var(--sf)}
+input[type=range]{width:100%;accent-color:var(--ac)}textarea,input[type=text]{width:100%;border:1px solid var(--ln);background:var(--bg);color:var(--ink);border-radius:10px;padding:10px;font:15px Inter}
+.ent{border-top:1px solid var(--ln);padding:9px 0;font-size:14px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.out{white-space:pre-wrap;background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:12px;font-size:15px;margin-top:10px;min-height:48px}
+.row3{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;margin-top:8px}@media(max-width:600px){.row3{grid-template-columns:1fr 1fr}}
+.dr{display:grid;grid-template-columns:250px 1fr;gap:18px;align-items:start}@media(max-width:780px){.dr{grid-template-columns:1fr}}
+.ro{display:flex;flex-direction:column;gap:6px;align-items:flex-start;width:100%;text-align:left;background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer;color:var(--ink);font:15px Inter}.ro.on{border-color:var(--ac);background:var(--ac2)}
+#rxp{display:none;max-width:100%;max-height:220px;border-radius:10px;margin:10px 0}
+footer{border-top:1px solid var(--ln);padding:24px 0;color:var(--mu);font-size:13px;margin-top:20px}
+.emg{background:#b3263e;color:#fff;border-radius:14px;padding:18px;margin:14px 0}.emg h2{font-size:24px;margin-bottom:6px}.emg .btn{background:#fff;color:#b3263e;margin:8px 8px 0 0}.emg ul{color:#fff;margin:4px 0}.emg p{color:#fff;margin:0}
+.cr{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--ln);font-size:16px}.cr:first-child{border:0}.cr span{color:var(--mu)}.cr b{text-align:right}details>summary{cursor:pointer}details.card>summary{font-size:17px}
+
+.g2>*,.dr>*,.cr>*{min-width:0}
+.fut{border-style:dashed}.fut h2{font-size:24px;margin:12px 0 8px}
+textarea.rep{min-height:230px;margin-top:10px;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace}
+.cr b .tiny{font-weight:400}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.station-link{border:1px solid var(--ln);border-radius:12px;background:var(--sf);padding:14px;margin:12px 0}
+.station-link h3{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.station-live{display:inline-flex;align-items:center;gap:6px;font:600 12px Inter,sans-serif;color:var(--mu)}
+.station-live.connected{color:var(--ok)}.station-live i{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block}
+.station-values{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px;margin:10px 0}
+.station-values div{padding:8px;background:var(--bg);border-radius:8px;font-size:13px}.station-values b{display:block;font-size:16px}
+.station-source{font-size:12px;color:var(--mu);margin:7px 0 0}
+.station-analysis{margin-top:10px;padding:10px;border-left:3px solid var(--ac);background:var(--bg);font-size:12px}
+.station-analysis h4{margin:0 0 5px;font-size:13px}.station-analysis p{margin:4px 0;color:var(--mu)}
+</style>
+<style>
+.pg.on{animation:page-enter .28s ease both}
+.tp.on{animation:panel-enter .22s ease both}
+nav a{transition:color .18s ease,text-decoration-color .18s ease}
+nav a.on{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:7px}
+.btn,.tb,.ro{transition:transform .16s ease,background-color .16s ease,border-color .16s ease,box-shadow .16s ease}
+.btn:hover,.tb:hover,.ro:hover{transform:translateY(-1px)}
+.btn:hover{box-shadow:0 4px 12px #6d5b5e24}
+.tabs2{scrollbar-width:thin;scroll-snap-type:x proximity}
+.tabs2>*{scroll-snap-align:start}
+@keyframes page-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes panel-enter{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:480px){nav a{margin-left:10px;font-size:14px}nav .logo{font-size:18px}.tabs2{gap:6px}.tb{padding:9px 12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+<nav><div class="w"><a class="logo" href="#home">SickleCare AI</a><div><a href="#home">Home</a><a href="#patient">Patient</a><a href="#doctor">Doctor</a></div></div></nav>
+
+<div class="pg" id="pg-home">
+<header class="hero"><div class="w"><span class="tag">WEARABLE HEALTH TECH · STUDENT PROTOTYPE</span>
+<h1>One patch. One app. Patient and doctor on the same page.</h1>
+<p>The patch connects by itself, monitors you around the clock, checks your condition against your prescription and raises an emergency alert when it matters. Doctors see everything in one portal.</p></div></header>
+<section><div class="w"><div class="g2">
+<div class="card role"><h2>I’m a patient</h2><p>Nothing to type. Your patch connects on its own, and the app shows how you’re doing, checks your medicines and handles emergencies.</p><a class="btn" href="#patient">Open patient app</a></div>
+<div class="card role"><h2>I’m a doctor</h2><p>Review your patients, 7-day trends, medicine adherence and AI decision support. Send advice back to the patient.</p><a class="btn" href="#doctor">Open doctor portal</a></div>
+</div></div></section>
+<section style="padding-top:0"><div class="w"><div class="card fut"><span class="tag">FUTURE RESEARCH · EXPERIMENTAL</span>
+<h2>Microneedle medicine patch</h2>
+<p>Microneedle patches use tiny needles that pass the outer layer of skin. Researchers are studying them as a way to give sickle cell medicines such as hydroxyurea and L-glutamine through the skin, in materials that release the medicine slowly, aiming for about a week from one patch.</p>
+<div class="g2" style="margin-top:12px">
+<div class="card"><h3>What researchers hope for</h3><ul class="yes"><li>Little or no pain when the patch is applied</li><li>Fewer daily doses, which may help people keep to their treatment</li><li>Skipping the gut and the liver's first pass, which may reduce side effects</li></ul></div>
+<div class="card"><h3>Limits in this project</h3><ul class="no"><li>Experimental. Not an available treatment and not part of this demo</li><li>The monitoring patch in this app only senses readings. It never delivers medicine</li><li>Any link between readings and dosing would stay with the doctor. SickleCare AI never changes a dose</li><li>Needs laboratory work, clinical trials and regulatory approval first</li></ul></div>
+</div></div></div></section>
+<section style="padding-top:0"><div class="w"><details><summary class="tb" style="display:inline-block;margin-bottom:14px">How AI is used and roadmap</summary><h2 class="s">How AI is used</h2><div class="g2">
+<div class="card"><h3>AI can</h3><ul class="yes"><li>Read a prescription photo into a medicine list</li><li>Summarize trends and symptom logs</li><li>Say whether readings look like improving, stable or worse</li><li>Draft a clinical summary for the doctor</li></ul></div>
+<div class="card"><h3>AI must not</h3><ul class="no"><li>Diagnose sickle cell disease</li><li>Predict every pain crisis</li><li>Change doses or prescribe medicine</li><li>Say normal readings rule out a crisis</li></ul></div></div>
+<h2 class="s" style="margin-top:26px">Roadmap</h2><div class="arch"><span>1 App mockup</span><span>2 Wearable demo</span><span>3 Data pipeline</span><span>4 Clinical review</span><span>5 Validation</span><span>6 Future: drug delivery research</span></div>
+</details><div class="warn" style="margin-top:22px">Severe pain, fever, chest pain, breathing difficulty or sudden weakness may need urgent medical help. This is a concept prototype, not a certified medical device. Do not delay care or change treatment based on it.</div></div></section>
+</div>
+
+<div class="pg" id="pg-patient"><div class="w">
+<div id="emg"></div><div class="top"><h1>Patient app</h1>
+<details><summary>Demo controls</summary><select id="scn" aria-label="Reading scenario" onchange="setScen(this.value)"><option value="normal">Readings: normal</option><option value="fever">Readings: fever</option><option value="lowo2">Readings: low SpO₂</option><option value="crisis">Readings: emergency</option></select><select id="prf" aria-label="Seven day profile" onchange="setProf(this.value)"><option value="improving">7 days: improving</option><option value="stable">7 days: stable</option><option value="worsening">7 days: getting worse</option></select><select id="sgn" aria-label="Patch signal" onchange="setSig(this.value)"><option value="strong">Patch signal: strong</option><option value="weak">Patch signal: weak</option><option value="lost">Patch signal: none</option></select></details></div>
+<div class="tabs2"><button class="tb on" data-g="pt" data-t="today" onclick="show('pt','today')">Today</button><button class="tb" data-g="pt" data-t="vit" onclick="show('pt','vit')">Vitals</button><button class="tb" data-g="pt" data-t="med" onclick="show('pt','med')">Medicines</button><button class="tb" data-g="pt" data-t="prog" onclick="show('pt','prog')">7-day trend</button><button class="tb" data-g="pt" data-t="dev" onclick="show('pt','dev')">Connect patch</button><button class="btn g" onclick="show('pt','sym')">Log symptoms</button></div>
+
+<div class="tp on" data-g="pt" id="pt-today"><div id="status"></div><div class="card"><h3>Live AI guidance <span class="bd review" id="agst">Auto</span></h3><div class="out" id="ag">Waiting for your patch…</div></div><div id="cm"></div><p style="margin:12px 0"><button class="btn g" onclick="show('pt','sym')">Log how I feel (optional)</button></p></div>
+<div class="tp" data-g="pt" id="pt-vit"><div id="alerts"></div>
+<div class="tiles"><div class="tile"><small>Heart rate</small><b id="vh">–<i> bpm</i></b><svg id="sh"></svg></div><div class="tile"><small>Oxygen (SpO₂)</small><b id="vo">–<i> %</i></b><svg id="so"></svg></div><div class="tile"><small>Skin temperature</small><b id="vt">–<i> °C</i></b><svg id="stt"></svg></div><div class="tile"><small>Activity</small><b id="va">–<i> /10</i></b><svg id="sa"></svg></div></div>
+<p class="tiny" id="ts"></p><div class="card" id="bl" style="margin-top:12px"></div><div class="card" id="dq"></div></div>
+
+<div class="tp" data-g="pt" id="pt-sym"><div class="card"><h3>How is your pain today? <span id="pv">3</span>/10</h3><input type="range" id="pain" min="0" max="10" value="3" oninput="$('pv').textContent=this.value">
+<p style="margin-top:10px">Tick anything you feel:</p><div id="sx"></div><textarea id="note" rows="2" placeholder="Notes (optional)" style="margin-top:8px"></textarea><p style="margin-top:10px"><button class="btn" onclick="saveSym()">Save entry</button></p></div><div class="card"><h3>Recent entries</h3><div id="ents"><p class="tiny">No entries yet.</p></div></div></div>
+
+<div class="tp" data-g="pt" id="pt-med"><div class="card"><h3>Medicine check</h3><div id="mc"></div><p class="tiny" style="margin-top:8px">Compares your condition with your prescription. It never tells you to stop or change a dose. Ask your doctor or pharmacist.</p><p style="margin-top:12px"><button class="btn" onclick="ask('meds',PT[0],$('mo'),this)">Explain my medicines</button></p><div class="out" id="mo">AI explanation appears here.</div></div><div class="card"><h3>Reminders</h3><div id="rm"></div><p class="tiny" style="margin-top:8px">Demo reminders follow the frequency on your prescription and only appear in this prototype. The clinic visit is sample data.</p></div><details><summary class="tb" style="display:inline-block;margin-bottom:12px">Edit medicines or upload prescription</summary><div class="card"><h3>Prescription</h3><p>Synced from your care team (demo prescription). Optional: upload a photo to update it. AI reads it into the list; always check it against the paper.</p>
+<input type="file" id="rxf" accept="image/*" onchange="prev()"><img id="rxp" alt="Prescription preview"><p style="margin-top:10px"><button class="btn" onclick="readRx(this)">Read prescription with AI</button></p><p class="tiny" id="rxs"></p></div>
+<div class="card"><h3>My medicines</h3><div id="ml"></div><div class="row3"><input type="text" id="mn" placeholder="Medicine"><input type="text" id="md" placeholder="Dose"><input type="text" id="mf" placeholder="How often"><button class="btn g" onclick="addMed()">Add</button></div>
+</div></details></div>
+
+<div class="tp" data-g="pt" id="pt-prog"><div class="card"><h3>Last 7 days <span id="ptr" class="bd"></span></h3><div id="pmc"></div><div id="pc"></div>
+<p style="margin-top:10px"><button class="btn" onclick="ask('better',PT[0],$('po'),this)">Is my condition getting better?</button></p><div class="out" id="po">AI analysis appears here.</div>
+<div style="display:flex;gap:6px;margin-top:10px"><input type="text" id="q" placeholder="Ask a question about your readings…"><button class="btn g" onclick="ask($('q').value||'better',PT[0],$('po'),this)">Ask</button></div></div></div>
+
+<div class="tp" data-g="pt" id="pt-dev"><div class="card" id="station-link-panel"></div><div class="card" id="dv"></div><div class="card"><h3>Report for your care team</h3><p>Creates a plain-text summary of your last 7 days, latest readings, medicines and symptom entries. Copy it to share. It is only created while data sharing is on.</p><button class="btn" id="repbtn" onclick="mkRep()">Create report</button><textarea id="rep" class="rep" rows="12" readonly hidden aria-label="Report text"></textarea><p style="margin-top:8px"><button class="btn g" id="repcp" onclick="cpRep()" hidden>Copy report</button> <span class="tiny" id="reps"></span></p></div></div>
+</div></div>
+
+<div class="pg" id="pg-doctor"><div class="w"><div class="top"><h1>Doctor portal</h1><span class="tiny">Demo patients · synthetic data</span></div>
+<div class="dr"><div id="ro"></div><div id="dd"></div></div></div></div>
+
+<footer><div class="w">SickleCare AI Monitoring Patch · Student prototype · Not a certified medical device · All readings are simulated.</div></footer>
+
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const MET={pain:["Pain","/10",0,10],hr:["Heart rate","bpm",50,130],sp:["SpO₂","%",85,100],t:["Skin temp","°C",35,39]};
+const DL=Array.from({length:7},(_,i)=>new Date(Date.now()-(6-i)*864e5).toLocaleDateString(undefined,{weekday:"short"}));
+function mk(p,s){const a={improving:[[7,98,93,37.8],[2,78,97,36.6]],worsening:[[2,78,97,36.6],[7,100,93,38.1]],stable:[[3,82,96,36.7],[3,82,96,36.7]]}[p];
+return Array.from({length:7},(_,i)=>{const f=i/6,n=Math.sin(i*2.3+s),l=k=>a[0][k]+(a[1][k]-a[0][k])*f;return{pain:Math.max(0,Math.round(l(0)+n)),hr:Math.round(l(1)+n*2),sp:+(l(2)+n*.3).toFixed(1),t:+(l(3)+n*.1).toFixed(1)}})}
+const PT=[{n:"You (demo patient)",d:mk("improving",1),meds:[{name:"Hydroxyurea",dose:"500 mg",freq:"Once daily",taken:true},{name:"Folic acid",dose:"5 mg",freq:"Once daily",taken:true}],diary:[],msgs:[],live:true,share:true},
+{n:"Aisha K. (demo)",d:mk("worsening",2),meds:[{name:"Hydroxyurea",dose:"500 mg",freq:"Once daily",taken:true},{name:"Folic acid",dose:"5 mg",freq:"Once daily",taken:false}],diary:[{time:"Today",pain:7,sx:["Fatigue","Feeling feverish"],note:""}],msgs:[]},
+{n:"Rahul S. (demo)",d:mk("stable",3),meds:[{name:"Folic acid",dose:"5 mg",freq:"Once daily",taken:true}],diary:[],msgs:[]}];
+const SC={normal:{hr:76,sp:97,t:36.5,a:3},fever:{hr:114,sp:95,t:38.4,a:2},lowo2:{hr:104,sp:90,t:36.9,a:2},crisis:{hr:128,sp:88,t:38.9,a:1}};
+const SX=["Fatigue","Feeling feverish","Joint or bone pain","Headache","Chest pain","Breathing difficulty","Sudden weakness"];
+let scen="normal",conn="on",cur={hr:76,sp:97,t:36.5,a:3},stationLink=false,stationValues=null,stationUpdated=0,stationChannel=null,D={hr:[],sp:[],t:[],a:[]},last=Date.now(),sel=0,mp="pain",mdk="pain",smp=null,sig="strong",miss=0,tot=0;
+const STATION_CHANNEL_PROTOCOL=2;
+const STATION_HANDOFF_KEY="sicklecare-rx-elevate-handoff-v2";
+try{stationChannel="BroadcastChannel" in window?new BroadcastChannel("sicklecare-rx-elevate-v1"):null}catch(e){stationChannel=null}
+const REM={};
+function trend(d){const m=(k,x)=>x.reduce((s,v)=>s+v[k],0)/x.length,A=d.slice(0,3),B=d.slice(-3),df=k=>m(k,B)-m(k,A);let s=0;const p=df("pain"),h=df("hr"),o=df("sp"),t=df("t");
+s+=p<=-1?1:p>=1?-1:0;s+=h<=-4?1:h>=4?-1:0;s+=o>=1?1:o<=-1?-1:0;s+=t<=-.3?1:t>=.3?-1:0;return s>=2?["Improving","ok"]:s<=-2?["Getting worse","urgent"]:["Stable","review"]}
+function activeVitals(){return stationLink?(stationValues||{hr:NaN,sp:NaN,t:NaN,a:NaN}):{hr:cur.hr,sp:cur.sp,t:cur.t,a:cur.a}}
+function alertsFor(p){const L=[],l=p.d[6],v=p.live?(stationLink?stationValues:cur):l,e=p.diary[0];
+if(p.live&&stationLink)L.push(["info","RX ELEVATE simulator linked in this browser. Values are user-entered; no physical sensor is connected."]);
+if(p.live&&conn!=="on"&&!stationLink)L.push(["info","Your patch is not connected, so readings may be out of date."]);
+	if(p.live&&conn==="on"&&sig!=="strong"&&!stationLink)L.push(["info",sig==="lost"?"No new readings are arriving from your patch. The values shown may be out of date.":"Weak patch signal. Readings may be noisy or missing, so alerts based on them are less reliable."]);
+if(v&&v.t>=38)L.push(["urgent","Fever-range temperature. Follow your care plan and contact your care team or seek urgent care now."]);
+if(v&&v.sp<92)L.push(["urgent","Low oxygen estimate. Follow your care plan and seek urgent medical help."]);
+if(v&&v.hr>110)L.push(["review","Heart rate is above 110 bpm. Rest and review your symptoms with your care plan."]);
+if(stationLink&&stationValues&&(stationValues.systolic>=180||stationValues.diastolic>=120))L.push(["urgent","Entered blood pressure is at or above 180/120 mmHg. Prompt professional assessment is advised; do not rely on this demo for care decisions."]);
+if(e){if(e.sx.some(s=>["Chest pain","Breathing difficulty","Sudden weakness"].includes(s)))L.push(["urgent","A logged symptom may need urgent assessment. Seek medical help now."]);else if(e.pain>=7)L.push(["review","High pain score logged. Follow your pain plan and contact your care team if it is not easing."])}
+if(!L.some(a=>a[0]!=="info")&&!(p.live&&(conn!=="on"||sig==="lost"))&&!stationLink)L.push(["ok","No alert right now. Normal readings cannot rule out a sickle cell complication, so log how you feel."]);return L}
+function show(g,t){document.querySelectorAll('.tb[data-g="'+g+'"]').forEach(b=>b.classList.toggle("on",b.dataset.t===t));document.querySelectorAll('.tp[data-g="'+g+'"]').forEach(p=>p.classList.toggle("on",p.id===g+"-"+t));if(t==="prog")rProg();if(t==="dev")renderStationPanel()}
+function renderStationPanel(){const panel=$("station-link-panel");if(!panel)return;const status=stationLink?"Simulator linked":"Not linked",cls=stationLink?" connected":"",v=stationValues;
+panel.innerHTML=`<h3>RX ELEVATE Simulator <span class="station-live${cls}"><i></i>${status}</span></h3><p class="tiny">${stationLink?"Browser link active. The simulator is not a physical sensor.":"Link the simulator page to show saved manual measurements here."}</p>${stationLink&&v?`<div class="station-values"><div><b>${v.systolic}/${v.diastolic} mmHg</b>Blood pressure</div><div><b>${v.hr} bpm</b>Pulse rate</div><div><b>${v.sp}%</b>SpO₂</div><div><b>${v.t.toFixed(1)} °C</b>Temperature</div></div><p class="station-source">${esc(v.identity||"Patient not identified")} · ${esc(v.source||"User-entered")} · Measured ${new Date(v.measuredAt||stationUpdated).toLocaleString()}</p>${v.symptoms?`<p class="station-source">Symptoms: ${esc(v.symptoms)}</p>`:""}${v.analysis?`<div class="station-analysis"><h4>Monitoring analysis · ${esc(v.analysis.provider)}</h4><p>${esc(v.analysis.latestSummary)}</p><p><b>Observed changes:</b> ${esc(v.analysis.observedChanges)}</p><p><b>Trend:</b> ${esc(v.analysis.historicalTrend)}</p><p><b>Next step:</b> ${esc(v.analysis.nextStep)}</p><p>${esc(v.analysis.disclaimer)}</p></div>`:""}`:stationLink?'<div class="al info">Browser link active. Save a measurement in the simulator to share it; no device data will be invented.</div>':""}<p style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 0"><button class="btn ${stationLink?"g":""}" type="button">${stationLink?"Unlink simulator":"Link simulator"}</button><a class="btn g" href="vital-station-simulator.html" target="_blank" rel="noopener">Open patch simulator</a></p><p class="station-source">Browser-only software link · no BLE, device, or server connection is implemented.</p>`}
+function requestStationLink(connected){stationLink=Boolean(connected);if(!stationLink){stationValues=null;try{localStorage.removeItem(STATION_HANDOFF_KEY)}catch(e){}}stationUpdated=Date.now();if(stationChannel)stationChannel.postMessage({type:"patient:request-link",protocol:STATION_CHANNEL_PROTOCOL,connected:stationLink});renderStationPanel();renderLive()}
+function receiveStationMessage(message){if(!message||typeof message.type!=="string")return;
+if(message.protocol!==STATION_CHANNEL_PROTOCOL)return;
+if(message.type==="station:link"){stationLink=Boolean(message.connected);if(!stationLink)stationValues=null;stationUpdated=Date.now();renderStationPanel();renderLive();return}
+if(message.type==="station:clear"){stationValues=null;stationUpdated=Date.now();renderStationPanel();renderLive();return}
+if(message.type!=="station:data"||message.source!=="saved-user-record"||!message.values)return;
+const v=message.values,nums=[v.systolic,v.diastolic,v.pulse,v.spo2,v.temperature].map(Number);if(!nums.every(Number.isFinite)||nums[0]<50||nums[0]>300||nums[1]<30||nums[1]>200||nums[0]-nums[1]<10||nums[2]<20||nums[2]>250||nums[3]<50||nums[3]>100||nums[4]<30||nums[4]>45)return;
+stationLink=true;stationUpdated=Date.parse(message.updatedAt)||Date.now();stationValues={systolic:nums[0],diastolic:nums[1],hr:nums[2],sp:nums[3],t:nums[4],identity:String(message.patient?.identity||""),symptoms:String(message.symptoms||""),measuredAt:String(message.measuredAt||""),source:String(message.measurementSource||"User-entered"),analysis:message.analysis&&typeof message.analysis==='object'?message.analysis:null};renderStationPanel();renderLive();
+}
+if(stationChannel)stationChannel.addEventListener("message",event=>receiveStationMessage(event.data));
+try{const handoff=JSON.parse(localStorage.getItem(STATION_HANDOFF_KEY)||"null");if(handoff&&Date.now()-(Date.parse(handoff.updatedAt)||0)<7*864e5)receiveStationMessage(handoff)}catch(e){}
+$("station-link-panel").addEventListener("click",event=>{if(event.target.closest("button")){const button=event.target.closest("button");if(button.textContent.includes("Unlink"))requestStationLink(false);else if(button.textContent.includes("Link"))requestStationLink(true)}});
+setInterval(()=>{if(stationChannel)stationChannel.postMessage({type:"patient:hello",protocol:STATION_CHANNEL_PROTOCOL})},2000);
+$("sx").innerHTML=SX.map(s=>`<label class="ck"><input type="checkbox" value="${s}">${s}</label>`).join("");
+function spark(el,a,lo,hi){if(a.length<2)return;el.setAttribute("viewBox","0 0 140 30");el.innerHTML=`<polyline points="${a.map((v,i)=>(i/(a.length-1)*140).toFixed(1)+","+(28-(Math.min(Math.max(v,lo),hi)-lo)/(hi-lo)*26).toFixed(1)).join(" ")}" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linejoin="round"/>`}
+function tick(){if(conn!=="on")return;tot++;if(sig==="lost"||(sig==="weak"&&Math.random()<.3)){miss++;renderLive();return}const T=SC[scen],k=sig==="weak"?3:1,n=s=>(Math.random()-.5)*s*k;last=Date.now();cur.hr+=(T.hr-cur.hr)*.3+n(3);cur.sp=Math.min(100,cur.sp+(T.sp-cur.sp)*.3+n(.6));cur.t+=(T.t-cur.t)*.3+n(.08);cur.a=Math.max(0,cur.a+(T.a-cur.a)*.3+n(.6));
+for(const k in D){D[k].push(cur[k]);if(D[k].length>40)D[k].shift()}renderLive()}
+function renderLive(){const v=activeVitals();[["vh","hr"],["vo","sp"],["vt","t"]].forEach(([id,k])=>$(id).firstChild.textContent=!Number.isFinite(v[k])?"–":k==="t"?v.t.toFixed(1):Math.round(v[k]));$("va").firstChild.textContent=stationLink?"–":Math.round(cur.a);$("va").parentElement.querySelector("small").textContent=stationLink?"Activity · not provided":"Activity";
+let bpTile=$("vbp");if(stationLink&&stationValues){if(!bpTile){bpTile=document.createElement("div");bpTile.className="tile";bpTile.id="vbp";bpTile.innerHTML="<small>Blood pressure</small><b></b>";$("va").parentElement.parentElement.appendChild(bpTile)}bpTile.querySelector("b").innerHTML=esc(stationValues.systolic)+"/"+esc(stationValues.diastolic)+"<i> mmHg</i>"}else if(bpTile)bpTile.remove();
+[["sh",D.hr,50,140],["so",D.sp,85,100],["stt",D.t,35,39.5],["sa",D.a,0,10]].forEach(([id,values,min,max])=>{const chart=$(id);chart.hidden=stationLink;if(stationLink)chart.innerHTML="";else spark(chart,values,min,max)});
+const t=trend(PT[0].d);$("status").innerHTML=`${comb(t)}`;
+$("alerts").innerHTML=alertsFor(PT[0]).map(a=>`<div class="al ${a[0]}">${a[1]}</div>`).join("");
+$("ts").textContent=(stationLink?"RX ELEVATE manual entry · updated ":conn==="on"?"Live · updated ":"Patch disconnected · last update ")+new Date(stationLink?stationUpdated:last).toLocaleTimeString()+(stationLink?" · user-entered values":" · sample data only");
+const urg=alertsFor(PT[0]).some(a=>a[0]==="urgent");if(urg&&!emgAt){emgAt=new Date();if(location.hash==="#doctor")rDoc()}if(!urg&&emgAt){emgAt=null;if(location.hash==="#doctor")rDoc()}
+rEmg(urg);$("mc").innerHTML=medCheck(PT[0]).map(m=>`<div class="ent"><div><b>${esc(m.name)}</b> ${esc(m.dose)}<br><span class="tiny">${m.note}</span></div><span class="bd ${m.cls}">${m.st}</span></div>`).join("")||'<p class="tiny">No prescription synced yet.</p>';rBase();rDQ();autoAI()}
+function rMsgs(){$("cm").innerHTML=PT[0].msgs.map(m=>`<div class="card"><h3>Message from your care team</h3><p style="color:var(--ink)">${esc(m.txt)}</p><span class="tiny">${m.t}</span></div>`).join("")}
+function setScen(v){scen=v;last=Date.now()}function setSig(v){sig=v;miss=0;tot=0;last=Date.now();renderLive()}function setProf(v){PT[0].d=mk(v,1);renderLive();rProg()}
+function saveSym(){const sx=[...document.querySelectorAll("#sx input:checked")].map(i=>i.value);PT[0].diary.unshift({time:new Date().toLocaleString(),pain:+$("pain").value,sx,note:$("note").value.trim()});$("note").value="";document.querySelectorAll("#sx input").forEach(i=>i.checked=false);
+$("ents").innerHTML=PT[0].diary.map(e=>`<div class="ent"><div><b>${esc(e.time)}</b> · pain ${e.pain}/10<br>${esc(e.sx.join(", ")||"no symptoms ticked")}${e.note?"<br>"+esc(e.note):""}</div></div>`).join("");renderLive()}
+function prev(){const f=$("rxf").files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$("rxp").src=r.result;$("rxp").style.display="block"};r.readAsDataURL(f)}
+async function readRx(b){const f=$("rxf").files[0],o=$("rxs");if(!f){o.textContent="Choose a photo of your prescription first.";return}
+if(!smp){o.textContent="AI reading is not available here. Add your medicines manually below.";return}
+b.disabled=true;o.textContent="Reading prescription…";
+try{const r=await smp.json('Read this prescription image. Return ONLY JSON: {"medicines":[{"name":"","dose":"","frequency":""}],"unclear":""}. Do not guess unreadable text; describe it in unclear.',{images:[f],cache:false,modelTier:"default"});
+const m=(r.medicines||[]).filter(x=>x&&x.name);m.forEach(x=>PT[0].meds.push({name:x.name,dose:x.dose||"",freq:x.frequency||"",taken:false}));
+o.textContent=m.length?"Found "+m.length+" medicine(s). Please check them against your paper prescription."+(r.unclear?" Unclear: "+r.unclear:""):"No medicines found. "+(r.unclear||"Try a clearer photo.");rMeds()}catch(e){o.textContent="Could not read the image. Add your medicines manually below."}b.disabled=false}
+function rMeds(){const m=PT[0].meds;rRem();$("ml").innerHTML=m.length?m.map((x,i)=>`<div class="ent"><label><input type="checkbox" ${x.taken?"checked":""} onchange="PT[0].meds[${i}].taken=this.checked"> <b>${esc(x.name)}</b> ${esc(x.dose)} · ${esc(x.freq)}</label><button class="tb" onclick="PT[0].meds.splice(${i},1);rMeds()">Remove</button></div>`).join("")+'<p class="tiny">Tick when taken today.</p>':'<p class="tiny">No medicines yet. Upload a prescription or add one below.</p>'}
+function addMed(){const n=$("mn").value.trim();if(!n)return;PT[0].meds.push({name:n,dose:$("md").value.trim(),freq:$("mf").value.trim(),taken:false});["mn","md","mf"].forEach(i=>$(i).value="");rMeds()}
+function chips(w,m){return Object.keys(MET).map(k=>`<button class="tb ${k===m?"on":""}" onclick="setM('${w}','${k}')">${MET[k][0]}</button>`).join(" ")}
+
+function rBase(){const d=PT[0].d,av=k=>d.reduce((s,r)=>s+r[k],0)/d.length,v=activeVitals();if(stationLink){if(!stationValues){$("bl").innerHTML="<h3>RX ELEVATE station values</h3><p class=\"tiny\">Waiting for confirmed manual values from the station simulator.</p>";return}$("bl").innerHTML="<h3>RX ELEVATE station · manual entry</h3>"+[["Blood pressure",stationValues.systolic+"/"+stationValues.diastolic,"mmHg"],["Heart rate",Math.round(v.hr),"bpm"],["SpO₂",Math.round(v.sp),"%"],["Skin temperature",v.t.toFixed(1),"°C"]].map(([label,value,unit])=>`<div class="cr"><span>${label}</span><b>${value} ${unit}</b></div>`).join("")+"<p class=\"tiny\" style=\"margin-top:8px\">These manually entered values are not compared with the separate simulated 7-day history.</p>";return}
+const rows=[["Heart rate","hr",Math.round(v.hr),"bpm",0],["SpO₂","sp",Math.round(v.sp),"%",0],["Skin temperature","t",v.t,"°C",1]];
+$("bl").innerHTML="<h3>Compared with your 7-day average</h3>"+rows.map(([n,k,value,u,f])=>{const baseline=av(k),df=value-baseline,delta=Math.abs(df).toFixed(f),sign=(+delta===0?"±":df>0?"+":"−")+delta;
+return`<div class="cr"><span>${n}</span><b>${value.toFixed(f)} ${u} <span class="tiny">now</span> · ${baseline.toFixed(f)} ${u} <span class="tiny">average</span> · ${sign}</b></div>`}).join("")+(stationLink?`<div class="cr"><span>Blood pressure</span><b>${stationValues.systolic}/${stationValues.diastolic} mmHg <span class="tiny">manual entry</span></b></div>`:"")+'<p class="tiny" style="margin-top:8px">A baseline helps show change over time. It is not a diagnosis, and a reading close to your average does not rule out a complication.</p>'}
+function rDQ(){if(stationLink){$("dq").innerHTML=`<h3>Data source <span class="bd ${stationValues?"ok":"review"}">${stationValues?"Station linked":"Awaiting values"}</span></h3>${stationValues?`<div class="cr"><span>Last update</span><b>${new Date(stationUpdated).toLocaleTimeString()}</b></div><div class="cr"><span>Source</span><b>Manual entry</b></div>`:'<p class="tiny">Enter all required values in the station simulator and confirm manual entry.</p>'}<p class="tiny" style="margin-top:8px">The station is a browser simulation. Values are user-entered and are not sensor measurements.</p>`;return}const age=Math.round((Date.now()-last)/1000),got=tot?Math.round((tot-miss)/tot*100):100,
+st=conn!=="on"?["Not connected","review"]:sig==="strong"?["Strong","ok"]:sig==="weak"?["Weak","review"]:["No signal","urgent"],
+note=conn!=="on"?"Connect your patch to get live readings.":sig==="strong"?"Readings are arriving normally.":sig==="weak"?"Some readings may be noisy or missing. Check that the patch sits snugly on clean, dry skin.":"No new readings are arriving. Check that the patch is switched on and close to your phone.",
+r=(a,b)=>`<div class="cr"><span>${a}</span><b>${b}</b></div>`;
+$("dq").innerHTML=`<h3>Data quality <span class="bd ${st[1]}">${st[0]}</span></h3>${r("Last reading",conn==="on"?(age<5?"just now":age<90?age+" s ago":Math.round(age/60)+" min ago"):"–")}${r("Readings received",conn==="on"?got+"%":"–")}<p class="tiny" style="margin-top:8px">${note}</p>`}
+function rRem(){const m=PT[0].meds,t=f=>/twice|bd|2/i.test(f)?"8:00 am and 8:00 pm":/once|daily|od/i.test(f)?"8:00 am":"As prescribed",
+row=(id,title,sub)=>`<div class="ent"><div><b>${esc(title)}</b><br><span class="tiny">${esc(sub)}</span></div><label class="ck"><input type="checkbox" id="rem-${id}" ${REM[id]===false?"":"checked"} onchange="REM['${id}']=this.checked"> Remind me</label></div>`;
+$("rm").innerHTML=m.map((x,i)=>row("m"+i,(x.name+" "+x.dose).trim(),t(x.freq||""))).join("")+row("ap","Clinic visit (sample)","Fri 6 Nov 2026, 10:30 am · haematology clinic")}
+function repText(){const P=PT[0],d=P.d,f=d[0],l=d[6],ln=(k,u,x)=>`${k}: ${f[x]} → ${l[x]} ${u} (day 1 to day 7)`;
+return["SICKLECARE AI · REPORT FOR CARE TEAM","Created "+new Date().toLocaleString()+" · shared by the patient with consent","SAMPLE DATA FROM A STUDENT PROTOTYPE. Not a medical record.","",
+"7-day trend (rule-based): "+trend(d)[0],ln("Pain","/10","pain"),ln("Heart rate","bpm","hr"),ln("SpO2","%","sp"),ln("Skin temperature","°C","t"),"",
+"Latest patch readings: HR "+Math.round(cur.hr)+" bpm, SpO2 "+Math.round(cur.sp)+"%, skin temp "+cur.t.toFixed(1)+" °C","Patch signal: "+(conn!=="on"?"disconnected":sig),"",
+"Medicines:",...(P.meds.length?P.meds.map(m=>"- "+m.name+" "+m.dose+" "+m.freq+" · "+(m.taken?"taken today":"not yet taken today")):["- none listed"]),"",
+"Recent symptom entries:",...(P.diary.length?P.diary.slice(0,4).map(e=>"- "+e.time+" · pain "+e.pain+"/10 · "+(e.sx.join(", ")||"no symptoms ticked")+(e.note?" · "+e.note:"")):["- none logged"]),"",
+"Alerts: "+alertsFor(P).map(a=>a[1]).join(" | "),"","Readings cannot rule out a sickle cell complication. This prototype does not diagnose or change treatment."].join("\n")}
+function mkRep(){const o=$("reps");if(!PT[0].share){o.textContent="Turn on data sharing above to create a report.";return}$("rep").value=repText();$("rep").hidden=false;$("repcp").hidden=false;o.textContent="Check it before you share it."}
+function cpRep(){const r=$("rep"),ok=()=>$("reps").textContent="Copied.",no=()=>{r.focus();r.select();$("reps").textContent="Select the text and copy it."};try{navigator.clipboard.writeText(r.value).then(ok,no)}catch(e){no()}}
+function setM(w,m){if(w==="p"){mp=m;rProg()}else{mdk=m;drawD()}}
+function chartSVG(d,m){const [,,lo,hi]=MET[m],W=320,H=130,x=i=>20+i*(W-40)/6,y=v=>H-24-(Math.min(Math.max(v,lo),hi)-lo)/(hi-lo)*(H-44);
+return`<svg viewBox="0 0 ${W} ${H}" style="width:100%;margin-top:8px"><g stroke="var(--ln)">${[0,1,2].map(k=>`<line x1="10" x2="${W-10}" y1="${20+k*43}" y2="${20+k*43}"/>`).join("")}</g><polyline points="${d.map((r,i)=>x(i).toFixed(1)+","+y(r[m]).toFixed(1)).join(" ")}" fill="none" stroke="var(--ac)" stroke-width="2.5" stroke-linejoin="round"/>${d.map((r,i)=>`<circle cx="${x(i)}" cy="${y(r[m])}" r="3.5" fill="var(--ac)"/><text x="${x(i)}" y="${y(r[m])-8}" font-size="9" text-anchor="middle" fill="var(--ink)">${r[m]}</text><text x="${x(i)}" y="${H-6}" font-size="9" text-anchor="middle" fill="var(--mu)">${DL[i]}</text>`).join("")}</svg>`}
+function rProg(){$("pmc").innerHTML=chips("p",mp);$("pc").innerHTML=chartSVG(PT[0].d,mp);const t=trend(PT[0].d);$("ptr").className="bd "+t[1];$("ptr").textContent=t[0]}
+function rDev(){const s=conn;$("dv").innerHTML=`<h3>Your patch</h3>`+(s==="on"?`<div class="al ok">Connected · SickleCare Patch A1<br><span class="tiny">Battery 82% · Signal strong · Syncing live</span></div><button class="btn g" onclick="disc()">Disconnect</button>`
+:s==="off"?`<p>No patch connected. Put the patch on your skin and switch it on.</p><button class="btn" onclick="scan()">Search for patch</button>`
+:s==="scan"?`<div class="al info">Searching for nearby patches…</div>`
+:s==="found"?`<div class="ent"><div><b>SickleCare Patch A1</b><br><span class="tiny">Signal strong · demo device</span></div><button class="btn" onclick="pair()">Pair</button></div>`
+:`<div class="al info">Pairing…</div>`)+`<hr style="border:0;border-top:1px solid var(--ln);margin:16px 0"><h3>Care team</h3><label class="ck"><input type="checkbox" ${PT[0].share?"checked":""} onchange="PT[0].share=this.checked"> Share my data with my doctor</label><p class="tiny" style="margin-top:6px">You can stop sharing at any time. Real Bluetooth pairing is simulated in this prototype.</p>`}
+function scan(){conn="scan";rDev();setTimeout(()=>{conn="found";rDev()},1600)}function pair(){conn="pair";rDev();setTimeout(()=>{conn="on";last=Date.now();rDev();renderLive()},1400)}function disc(){conn="off";rDev();renderLive()}
+function drawD(){$("dmc").innerHTML=chips("d",mdk);$("dc").innerHTML=chartSVG(PT[sel].d,mdk)}
+function rDoc(){$("ro").innerHTML=PT.map((p,i)=>{const t=trend(p.d);return`<button class="ro ${i===sel?"on":""}" onclick="sel=${i};rDoc()"><b>${esc(p.n)}</b><span class="bd ${t[1]}">${t[0]}</span>${emgOf(p)?'<span class="bd urgent">EMERGENCY</span>':''}</button>`}).join("");
+const p=PT[sel],t=trend(p.d),l=p.d[6];
+if(p.live&&!p.share){$("dd").innerHTML=`<div class="card"><h3>${esc(p.n)}</h3><p>This patient has turned off data sharing.</p></div>`;return}
+$("dd").innerHTML=`<h3 style="font-size:24px;margin-bottom:10px">${esc(p.n)} <span class="bd ${t[1]}">${t[0]}</span></h3>${emgOf(p)?`<div class="emg"><h2>Emergency alert</h2><ul>${alertsFor(p).filter(a=>a[0]==="urgent").map(a=>`<li>${a[1]}</li>`).join("")}</ul></div>`:""}
+<div class="tiles"><div class="tile"><small>Pain</small><b>${l.pain}<i> /10</i></b></div><div class="tile"><small>Heart rate</small><b>${l.hr}<i> bpm</i></b></div><div class="tile"><small>SpO₂</small><b>${l.sp}<i> %</i></b></div><div class="tile"><small>Skin temp</small><b>${l.t}<i> °C</i></b></div></div>
+${alertsFor(p).map(a=>`<div class="al ${a[0]}">${a[1]}</div>`).join("")}
+<details class="card" open><summary><b>7-day trend</b></summary><div id="dmc"></div><div id="dc"></div></details>
+<details class="card"><summary><b>Medicines and adherence</b></summary>${p.meds.length?p.meds.map(m=>`<div class="ent"><span>${esc(m.name)} ${esc(m.dose)} · ${esc(m.freq)}</span><span class="bd ${m.taken?"ok":"review"}">${m.taken?"Taken today":"Not yet taken"}</span></div>`).join(""):'<p class="tiny">No prescription uploaded yet.</p>'}</details>
+<details class="card"><summary><b>Symptom diary</b></summary>${p.diary.length?p.diary.slice(0,4).map(e=>`<div class="ent"><span><b>${esc(e.time)}</b> · pain ${e.pain}/10 · ${esc(e.sx.join(", ")||"none")}${e.note?" · "+esc(e.note):""}</span></div>`).join(""):'<p class="tiny">No entries.</p>'}</details>
+<div class="card"><h3>AI decision support</h3><button class="btn" onclick="ask('resp',PT[sel],$('dout'),this)">Is the patient responding to treatment?</button> <button class="btn g" onclick="ask('sum',PT[sel],$('dout'),this)">Clinical summary</button><div class="out" id="dout">AI output appears here. It supports, and never replaces, your clinical judgment.</div></div>
+<div class="card"><h3>Advice to patient</h3><textarea id="adv" rows="3" placeholder="Write a message for the patient…"></textarea><p style="margin-top:10px"><button class="btn" onclick="sendAdv()">Send to patient</button> <span class="tiny" id="advs"></span></p></div>`;drawD()}
+function sendAdv(){const v=$("adv").value.trim();if(!v)return;PT[sel].msgs.unshift({t:new Date().toLocaleString(),txt:v});$("adv").value="";$("advs").textContent="Sent"+(sel===0?" · visible in the patient app.":".");rMsgs()}
+const RULES="You support patients and clinicians using SickleCare, a student prototype for sickle cell disease monitoring. Use plain language, under 170 words. Only use the data given; say when data is limited. Never diagnose, never predict a crisis, never say normal readings mean safety, never change doses or suggest new medicines (tell people to ask their doctor or pharmacist). For fever, chest pain, breathing difficulty, sudden weakness, low SpO2 or severe pain, say to follow the care plan and seek urgent help. End with a short reminder that this is not a medical device.";
+const TASK={auto:"Give live guidance in simple words, under 60 words in total: emergency sign first if present, then how the condition looks versus the last 7 days, whether the prescribed medicines look helpful, unclear or worth raising with the doctor (never say to stop, skip or change a dose), then one clear next step.",better:"Using the 7-day trend, current readings, symptoms and medicine adherence, say whether this person's condition looks like it is improving, stable or getting worse. Give 2-3 reasons from the data and what to discuss with their care team.",meds:"Explain each listed medicine in plain words: what it is commonly used for in sickle cell care and what to ask the doctor or pharmacist. If the list is empty, say to upload a prescription.",resp:"For the doctor: say whether the patient appears to be responding to current treatment, citing the 7-day trend, adherence and symptoms, and what data is missing. Decision support only.",sum:"Write a concise clinical summary for the doctor: trend per metric, alerts, adherence and symptoms in short lines."};
+function ctx(p){const v=activeVitals(),l=p.live?`Live now: HR ${Math.round(v.hr)}, SpO2 ${Math.round(v.sp)}, skin temp ${v.t.toFixed(1)}, patch ${stationLink?"RX ELEVATE station linked (manual entry)":conn==="on"?"connected":"disconnected"}. `:"";
+return`SYNTHETIC DEMO DATA. Patient: ${p.n}. Daily averages oldest to newest (pain, hr, sp, t): ${JSON.stringify(p.d)}. Rule-based trend: ${trend(p.d)[0]}. ${l}Medicines from prescription: ${JSON.stringify(p.meds)}. Recent diary: ${JSON.stringify(p.diary.slice(0,4))}. Alerts: ${alertsFor(p).map(a=>a[1]).join(" | ")}`}
+async function ask(k,p,el,btn){btn.disabled=true;el.textContent="Thinking…";let t=null;
+if(smp){try{t=(await smp(RULES+"\n\n"+ctx(p)+"\n\nTask: "+(TASK[k]||"Answer this question: "+k),{cache:false,modelTier:"default"})).text}catch(e){t=e&&e.code==="rate_limited"?"Too many requests. Please wait a moment.":null}}
+el.textContent=t||fbText(p);btn.disabled=false;if(k==="auto"&&t)$("agst").textContent="Updated "+new Date().toLocaleTimeString()}
+let emgAt=null,agSig="",agAt=0,emgKey="";
+function emgOf(p){return p.live?!!emgAt:alertsFor(p).some(a=>a[0]==="urgent")}
+function medCheck(p){const t=trend(p.d)[0],u=alertsFor(p).some(a=>a[0]==="urgent");return p.meds.map(m=>{let r;
+if(u)r=["Emergency first","urgent","Get emergency care first. Bring this list and don’t change doses on your own."];
+else if(!m.taken)r=["Due today","review","Not taken yet today. Take it as prescribed, or ask your doctor if you have missed doses."];
+else if(t==="Improving")r=["Looks helpful","ok","Condition is improving while you take it as prescribed."];
+else if(t==="Getting worse")r=["Needs doctor review","urgent","Symptoms are getting worse while on this. Tell your doctor soon. Don’t change it yourself."];
+else r=["No change yet","review","Condition is stable. Keep taking as prescribed and review at your next visit."];
+return{name:m.name,dose:m.dose,st:r[0],cls:r[1],note:r[2]}})}
+function fbText(p){return"Rule-based guidance: 7-day trend is "+trend(p.d)[0]+". "+alertsFor(p).map(a=>a[1]).join(" ")+" "+medCheck(p).map(m=>m.name+": "+m.st+".").join(" ")}
+function rEmg(u){const e=$("emg");if(!u){e.innerHTML="";emgKey="";return}const P=PT[0],w=alertsFor(P).filter(a=>a[0]==="urgent").map(a=>`<li>${a[1]}</li>`).join(""),k=w+P.share;if(k===emgKey)return;emgKey=k;
+e.innerHTML=`<div class="emg"><h2>Emergency: get medical help now</h2><ul>${w}</ul><a class="btn" href="tel:112">Call 112 now</a><a class="btn" href="tel:108">Ambulance 108</a>
+<p style="margin:12px 0 4px">${P.share?`<b>Your care team was alerted automatically at ${emgAt.toLocaleTimeString()}</b> with your latest readings and medicine list (simulated).`:`<b>Data sharing is off.</b> <button class="btn" onclick="PT[0].share=true;rEmg(true);rDev()">Alert my care team</button>`}</p>
+<p style="margin-top:8px"><b>Your medicines:</b> ${P.meds.map(m=>esc(m.name+" "+m.dose)).join(", ")||"none synced"}</p>
+<p style="margin-top:8px"><b>While you wait</b></p><ul><li>Don’t stay alone. Ask someone nearby to stay with you.</li><li>Don’t drive yourself.</li><li>Tell responders you have sickle cell disease and show them your medicine list.</li><li>Follow the emergency plan your doctor gave you.</li></ul><p style="font-size:12px;margin-top:8px">Prototype only. 112 and 108 are India’s emergency numbers.</p></div>`}
+function autoAI(){if(stationLink){$("ag").textContent=stationValues?"Saved RX ELEVATE values are user-entered. Review the measurement history and transparent flags in the simulator; this page does not diagnose.":"RX ELEVATE simulator link active. Waiting for a saved measurement.";return}if(conn!=="on")return;if(!smp){$("ag").textContent=fbText(PT[0]);return}const sig=alertsFor(PT[0]).map(a=>a[0]).join()+trend(PT[0].d)[0]+PT[0].meds.map(m=>m.taken).join(),n=Date.now();if(n-agAt<20000||(sig===agSig&&n-agAt<120000))return;agSig=sig;agAt=n;ask("auto",PT[0],$("ag"),{})}
+function autoConnect(){conn="scan";rDev();renderLive();setTimeout(()=>{conn="pair";rDev();renderLive();setTimeout(()=>{conn="on";last=Date.now();rDev();for(let i=0;i<12;i++)tick()},1200)},1400)}
+function comb(t){const P=PT[0],A=alertsFor(P),lv=A.some(a=>a[0]==="urgent")?"urgent":A.some(a=>a[0]==="review")?"review":"ok",mc=medCheck(P),tk=P.meds.filter(m=>m.taken).length,e=P.diary[0],
+ms=mc.some(m=>m.st==="Emergency first")?"Emergency first":mc.some(m=>m.st==="Needs doctor review")?"Needs doctor review":mc.length&&mc.every(m=>m.st==="Looks helpful")?"Looks helpful":mc.length?"No change yet":"None synced",
+hl=stationLink&&!stationValues?"Waiting for station values":stationLink&&lv!=="urgent"?"Saved values · review in context":lv==="urgent"?"Get medical help now":lv==="review"||t[1]==="urgent"?"Keep an eye on things":"You’re doing well",r=(a,b)=>`<div class="cr"><span>${a}</span><b>${b}</b></div>`,v=activeVitals(),vitals=Number.isFinite(v.hr)?Math.round(v.hr)+" bpm · "+Math.round(v.sp)+"% · "+v.t.toFixed(1)+" °C":"Awaiting confirmed manual entry";
+return`<div class="al ${stationLink&&!stationValues?"info":lv}" style="font:600 24px Fraunces,Georgia,serif;margin-top:0">${hl}</div><div class="card">${r("Condition, 7 days",stationLink?"Separate synthetic demo history · not linked records":t[0])}${r("Vitals now",vitals)}${stationLink&&stationValues?r("Blood pressure",stationValues.systolic+"/"+stationValues.diastolic+" mmHg · manual entry"):""}${r("Medicines",tk+"/"+P.meds.length+" taken · "+ms)}${r("Symptoms",e?"Pain "+e.pain+"/10":"Not logged")}${r("Device",stationLink?"Simulator linked · manual entry":conn==="on"?"Demo patch connected":conn==="off"?"Demo patch disconnected":"Connecting…")}</div>`}
+function route(){const h=(location.hash||"#home").slice(1),id=["home","patient","doctor"].includes(h)?h:"home";document.querySelectorAll(".pg").forEach(p=>p.classList.toggle("on",p.id==="pg-"+id));document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+id));if(id==="doctor")rDoc();if(id==="patient"){rMsgs();renderStationPanel()}window.scrollTo(0,0)}
+(async()=>{try{smp=await claude.use("sample")}catch(e){}autoAI();})();
+addEventListener("hashchange",route);conn="off";rMeds();rDev();rProg();route();autoConnect();setInterval(tick,1500);
+</script>
+
+</body></html>
